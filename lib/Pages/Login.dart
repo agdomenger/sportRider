@@ -5,7 +5,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColorLight,
+      backgroundColor: Theme.of(context).primaryColor,
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -16,10 +16,11 @@ class LoginPage extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Email',
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                  borderSide:
+                      BorderSide(color: Theme.of(context).primaryColorDark),
                 ),
                 labelStyle: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).primaryColorDark,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -29,10 +30,11 @@ class LoginPage extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Password',
                 focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                  borderSide:
+                      BorderSide(color: Theme.of(context).primaryColorDark),
                 ),
                 labelStyle: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).primaryColorDark,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -44,7 +46,7 @@ class LoginPage extends StatelessWidget {
               },
               child: Text('Login'),
               style: ElevatedButton.styleFrom(
-                  foregroundColor: Theme.of(context).primaryColorLight,
+                  foregroundColor: Theme.of(context).primaryColor,
                   backgroundColor: Theme.of(context).primaryColorDark),
             ),
             SizedBox(height: 16.0),
@@ -54,7 +56,7 @@ class LoginPage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => SignupPage(
-                      backgroundColor: Theme.of(context).primaryColorLight,
+                      backgroundColor: Theme.of(context).primaryColor,
                     ),
                   ),
                 );

@@ -32,7 +32,7 @@ class SignupPage extends StatelessWidget {
               },
               child: Text('Sign Up'),
               style: ElevatedButton.styleFrom(
-                  foregroundColor: Theme.of(context).primaryColorLight,
+                  foregroundColor: Theme.of(context).primaryColor,
                   backgroundColor: Theme.of(context).primaryColorDark),
             ),
           ],
@@ -58,10 +58,10 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Theme.of(context).primaryColor),
+          borderSide: BorderSide(color: Theme.of(context).primaryColorDark),
         ),
         labelStyle: TextStyle(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColorDark,
           fontWeight: FontWeight.bold,
         ),
       ),
