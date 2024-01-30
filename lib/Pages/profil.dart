@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sport_rider/Pages/questionnaireProfil.dart';
 
 void main() {
   runApp(MyApp());
@@ -167,43 +168,51 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 8),
-                      Container(
-                        padding: EdgeInsets.all(4.0),
-                        margin: EdgeInsets.all(4.0),
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).canvasColor,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                '  Déterminer mon profil',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold,
+                      InkWell(
+                        onTap: () {
+                          // Ajoutez ici la navigation vers la page du questionnaire
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => QuestionnaireApp()),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(4.0),
+                          margin: EdgeInsets.all(4.0),
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).canvasColor,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  '  Mon profil',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorDark,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              bottom:
-                                  4.0, // ajustez la marge en bas selon vos besoins
-                              left:
-                                  10.0, // ajustez la marge à gauche selon vos besoins
-                              child: Text(
-                                '0%',
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontSize: 40.0,
-                                  fontWeight: FontWeight.bold,
+                              Positioned(
+                                bottom: 4.0,
+                                left: 10.0,
+                                child: Text(
+                                  '0%',
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColorDark,
+                                    fontSize: 40.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],
