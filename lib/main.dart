@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sport_rider/Pages/Bottom.dart';
+import 'package:sport_rider/Pages/profil.dart';
 import 'themes.dart';
 import 'Pages/Login.dart';
 
@@ -39,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Center(
-        child: LoginPage(), // Intégrer le widget Login ici
+        child: ProfilePage(),
       ),
       //bottomNavigationBar: MyBottomNavigationBar(), il faut que ce soit seulement pour les pages une fois connecté
     );
