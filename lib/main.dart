@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sport_rider/Pages/AjoutEvent.dart';
 import 'package:sport_rider/Pages/Bottom.dart';
+import 'package:sport_rider/Pages/Sport.dart';
 import 'package:sport_rider/Pages/profil.dart';
+import 'package:sport_rider/Pages/questionnaireProfil.dart';
 import 'themes.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -37,12 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        title: Text(widget.title),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
       body: Center(
-        child: LoginPage(),
+        child: EventForm(),
       ),
       //bottomNavigationBar: MyBottomNavigationBar(), il faut que ce soit seulement pour les pages une fois connecté
     );
