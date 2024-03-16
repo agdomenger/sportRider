@@ -28,6 +28,17 @@ class _MyCalendarState extends State<MyCalendar> {
                 lastDay: DateTime.utc(2030, 12, 31),
                 focusedDay: _focusedDay,
                 calendarFormat: _calendarFormat,
+                eventLoader: (day) {
+                  List<Event> eventsForDay = [];
+                  for (var event in _events) {
+                    print(event.date);
+                    if (isSameDay(event.date, day)) {
+                      eventsForDay.add(event);
+                    }
+                  }
+                  print('Events for $day: ${eventsForDay.length}');
+                  return eventsForDay;
+                },
                 onFormatChanged: (format) {
                   setState(() {
                     _calendarFormat = format;
@@ -39,26 +50,55 @@ class _MyCalendarState extends State<MyCalendar> {
                     _focusedDay = focusedDay;
                   });
                 },
+                calendarBuilders: CalendarBuilders(
+                  markerBuilder: (context, day, events) {
+                    if (events.isNotEmpty) {
+                      return Positioned(
+                        bottom: 0,
+                        child: Row(
+                          children: events.map((event) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 2),
+                              child: Text(
+                                '🎉', // Emoji que vous souhaitez utiliser
+                                style: TextStyle(
+                                    fontSize: 16), // Taille de l'emoji
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  },
+                ),
               ),
+
               // Événements
-              EventWidget(
-                icon: Icons.fitness_center,
-                title: 'Séance de sport',
-                time: '10:00 - 11:00',
-                description: 'Entraînement de musculation',
-              ),
-              EventWidget(
-                icon: Icons.restaurant,
-                title: 'Déjeuner',
-                time: '12:00 - 13:00',
-                description: 'Déjeuner avec des amis',
-              ),
-              EventWidget(
-                icon: Icons.local_library,
-                title: 'Lecture',
-                time: '15:00 - 16:00',
-                description: 'Lecture du nouveau roman',
-              ),
+              for (var event in _events) ...[
+                EventWidget(
+                  icon: Icons.fitness_center,
+                  title: 'Séance de sport',
+                  time: '10:00 - 11:00',
+                  description: 'Entraînement de musculation',
+                  date: event.date,
+                ),
+                EventWidget(
+                  icon: Icons.restaurant,
+                  title: 'Déjeuner',
+                  time: '12:00 - 13:00',
+                  description: 'Déjeuner avec des amis',
+                  date: event.date,
+                ),
+                EventWidget(
+                  icon: Icons.local_library,
+                  title: 'Lecture',
+                  time: '15:00 - 16:00',
+                  description: 'Lecture du nouveau roman',
+                  date: event.date,
+                ),
+              ],
             ],
           ),
         ),
@@ -72,6 +112,7 @@ class EventWidget extends StatelessWidget {
   final String title;
   final String time;
   final String description;
+  final DateTime date;
 
   const EventWidget({
     Key? key,
@@ -79,6 +120,7 @@ class EventWidget extends StatelessWidget {
     required this.title,
     required this.time,
     required this.description,
+    required this.date,
   }) : super(key: key);
 
   @override
@@ -128,4 +170,24 @@ class EventWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class Event {
+  final DateTime date;
+
+  Event(this.date);
+}
+
+List<Event> _events = [
+  Event(DateTime(2024, 3, 1)),
+  Event(DateTime(2024, 3, 16)),
+  Event(DateTime(2024, 3, 17)), // Un événement pour aujourd'hui
+  Event(DateTime(2024, 3, 17)), // Un événement pour demain
+  Event(DateTime(2024, 3, 18)), // Un événement pour le lendemain
+  // Ajoutez d'autres événements au besoin
+];
+bool isSameDay(DateTime date1, DateTime date2) {
+  return date1.year == date2.year &&
+      date1.month == date2.month &&
+      date1.day == date2.day;
 }
