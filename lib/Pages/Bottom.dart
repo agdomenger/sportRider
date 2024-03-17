@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sport_rider/Pages/AjoutEvent.dart'; // Importez vos pages ici
+import 'package:sport_rider/Pages/Calendar.dart';
+import 'package:sport_rider/Pages/Sport.dart';
+import 'package:sport_rider/Pages/questionnaireProfil.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
   // Fonction pour créer un élément BottomNavigationBarItem avec une icône spécifique
@@ -31,8 +35,53 @@ class MyBottomNavigationBar extends StatelessWidget {
       onTap: (int index) {
         // Ajoutez votre logique de navigation ici en fonction de l'index
         // Par exemple, utilisez un Navigator pour changer d'écran
-        print('Tapped on item $index');
+        switch (index) {
+          case 0:
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyCalendar()),
+            );
+            break;
+          case 1:
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SportPage()),
+            );
+            break;
+          case 2:
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TodoPage()),
+            );
+            break;
+        }
       },
+    );
+  }
+}
+
+class TodoPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorLight,
+        title: Text('Preparation mentale'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Retour à la page précédente
+          },
+        ),
+      ),
+      backgroundColor: Theme.of(context).primaryColor,
+      body: Center(
+        child: Text(
+          'Cette page n\'est pas implémentée dans le cadre du P2i',
+          style: TextStyle(fontSize: 24.0),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }

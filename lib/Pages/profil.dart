@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:sport_rider/Pages/AjoutEvent.dart';
+import 'package:sport_rider/Pages/Bottom.dart';
 import 'package:sport_rider/Pages/Calendar.dart';
 import 'package:sport_rider/Pages/questionnaireProfil.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,9 +128,9 @@ class ProfilePage extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(4.0),
                         margin: EdgeInsets.all(4.0),
-                        height: 96,
+                        height: 86,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(8.0),
                           border: Border.all(
                             color: Theme.of(context)
@@ -194,9 +200,9 @@ class ProfilePage extends StatelessWidget {
                         child: Container(
                           padding: EdgeInsets.all(4.0),
                           margin: EdgeInsets.all(4.0),
-                          height: 96,
+                          height: 86,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
+                            color: Colors.transparent,
                             borderRadius: BorderRadius.circular(8.0),
                             border: Border.all(
                               color: Theme.of(context)
@@ -267,9 +273,9 @@ class ProfilePage extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(4.0),
                     margin: EdgeInsets.all(4.0),
-                    height: 200,
+                    height: 180,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.circular(8.0),
                       border: Border.all(
                         color: Theme.of(context)
@@ -293,14 +299,14 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          width: 110, // Adjust the width as needed
-                          height: 110, // Adjust the height as needed
+                          width: 100, // Adjust the width as needed
+                          height: 100, // Adjust the height as needed
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
                               SizedBox(
-                                width: 110, // Adjust the size of the gray part
-                                height: 110, // Adjust the size of the gray part
+                                width: 100, // Adjust the size of the gray part
+                                height: 100, // Adjust the size of the gray part
                                 child: CircularProgressIndicator(
                                   value:
                                       1.0, // Max value to create the gray part
@@ -350,7 +356,7 @@ class ProfilePage extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
+              padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
                 'Les évènements à venir : ',
                 style: TextStyle(
@@ -370,12 +376,13 @@ class ProfilePage extends StatelessWidget {
                 date: _events[i].date,
               ),
             Padding(
-              padding: const EdgeInsets.only(top: 16.0, right: 16.0),
+              padding: const EdgeInsets.only(top: 6.0, right: 16.0),
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Container(
+                  height: 38,
                   decoration: BoxDecoration(
-                    color: Colors.white, // Fond neutre
+                    color: Colors.transparent, // Fond neutre
                     borderRadius: BorderRadius.circular(8.0),
                     border: Border.all(
                       color:
@@ -396,9 +403,11 @@ class ProfilePage extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.add,
-                            color: Theme.of(context).primaryColorDark),
-                        SizedBox(width: 8.0),
+                        Icon(
+                          Icons.add,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        SizedBox(width: 6.0),
                         Text(
                           'Ajouter un événement',
                           style: TextStyle(
@@ -413,6 +422,7 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: MyBottomNavigationBar(),
     );
   }
 }

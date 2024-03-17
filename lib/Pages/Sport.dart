@@ -16,21 +16,14 @@ class _SportPageState extends State<SportPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text('SportRider'),
-          ],
+        backgroundColor: Theme.of(context).primaryColorLight,
+        title: Text('Preparation physique'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Retour à la page précédente
+          },
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              // Action when the profile icon is pressed
-            },
-          ),
-        ],
       ),
       body: Center(
         child: SingleChildScrollView(

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: myTheme,
-      home: const MyHomePage(title: 'SportRider'),
+      home: ProfilePage(),
     );
   }
 }
@@ -40,11 +40,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
       body: Center(
         child: ProfilePage(),
       ),
-      //bottomNavigationBar: MyBottomNavigationBar(), il faut que ce soit seulement pour les pages une fois connecté
     );
   }
 }

@@ -15,8 +15,16 @@ class _MyCalendarState extends State<MyCalendar> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           title: Text('Calendrier d\'événements'),
+          backgroundColor: Theme.of(context).primaryColorLight,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop(); // Retour à la page précédente
+            },
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -129,7 +137,7 @@ class EventWidget extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 20),
       padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Colors.transparent,
         border: Border.all(
           color: Theme.of(context).primaryColorLight,
           width: 2,
