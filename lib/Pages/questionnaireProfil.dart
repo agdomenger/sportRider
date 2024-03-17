@@ -15,6 +15,12 @@ class QuestionnaireApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColorLight,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop(); // Retour à la page précédente
+            },
+          ),
         ),
         body: SingleChildScrollView(
           child: QuestionnaireScreen(),

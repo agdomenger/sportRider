@@ -1,19 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sport_rider/Pages/AjoutEvent.dart';
+import 'package:sport_rider/Pages/Calendar.dart';
 import 'package:sport_rider/Pages/questionnaireProfil.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Profil Page',
-      home: ProfilePage(),
-    );
-  }
-}
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -25,6 +13,9 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 80,
+            ),
             // En-tête avec l'image ronde
             Container(
               height: 80,
@@ -106,7 +97,7 @@ class ProfilePage extends StatelessWidget {
             SizedBox(height: 16),
             // Informations utilisateur
             Text(
-              'Nom Prénom',
+              'Bienvenue  [Prénom]',
               style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -120,7 +111,7 @@ class ProfilePage extends StatelessWidget {
                   fontStyle: FontStyle.italic,
                   color: Theme.of(context).primaryColorDark),
             ),
-            SizedBox(height: 80),
+            SizedBox(height: 30),
             // Cadres organisés en lignes et colonnes
             Row(
               children: [
@@ -131,43 +122,66 @@ class ProfilePage extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(4.0),
                         margin: EdgeInsets.all(4.0),
-                        height: 100,
+                        height: 96,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).shadowColor,
+                          color: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.circular(8.0),
+                          border: Border.all(
+                            color: Theme.of(context)
+                                .shadowColor, // Couleur de la bordure
+                            width: 3.0, // Épaisseur de la bordure
+                          ),
                         ),
                         child: Stack(
                           children: [
                             Align(
                               alignment: Alignment.topLeft,
-                              child: Text(
-                                '  Mes chevaux',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '[Nom cheval]',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      color: Theme.of(context).shadowColor,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    'amateur4 cso',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      color: Theme.of(context).shadowColor,
+                                      fontSize: 12.0,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Positioned(
-                              bottom:
-                                  4.0, // ajustez la marge en bas selon vos besoins
-                              left:
-                                  10.0, // ajustez la marge à gauche selon vos besoins
-                              child: Text(
-                                '0%',
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 40.0,
-                                  fontWeight: FontWeight.bold,
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                width: 70, // Largeur du conteneur principal
+                                height: 70, // Hauteur du conteneur principal
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context).shadowColor,
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Image.asset(
+                                    '/Users/domenger/Desktop/P2i/sport_rider/assets/saut.png',
+                                    // Hauteur de l'icône à l'intérieur du rond blanc
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 4),
                       InkWell(
                         onTap: () {
                           // Ajoutez ici la navigation vers la page du questionnaire
@@ -180,34 +194,64 @@ class ProfilePage extends StatelessWidget {
                         child: Container(
                           padding: EdgeInsets.all(4.0),
                           margin: EdgeInsets.all(4.0),
-                          height: 100,
+                          height: 96,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).canvasColor,
+                            color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: Theme.of(context)
+                                  .canvasColor, // Couleur de la bordure
+                              width: 3.0, // Épaisseur de la bordure
+                            ),
                           ),
-                          child: Stack(
+                          child: Row(
                             children: [
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  '  Mon profil',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold,
+                              // Colonne pour le titre
+                              Expanded(
+                                flex: 6, // 60% de la largeur
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Mon profil',
+                                        style: TextStyle(
+                                          color: Theme.of(context).canvasColor,
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'À complèter',
+                                        style: TextStyle(
+                                          color: Theme.of(context).canvasColor,
+                                          fontSize: 12.0,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                              Positioned(
-                                bottom: 4.0,
-                                left: 10.0,
-                                child: Text(
-                                  '0%',
-                                  style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontSize: 40.0,
-                                    fontWeight: FontWeight.bold,
+                              // Colonne pour l'icône
+                              Expanded(
+                                flex: 4, // 40% de la largeur
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).canvasColor,
+                                    ),
+                                    child: Icon(
+                                      Icons.warning,
+                                      color: Colors.white,
+                                      size: 24.0,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -225,33 +269,78 @@ class ProfilePage extends StatelessWidget {
                     margin: EdgeInsets.all(4.0),
                     height: 200,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColorDark,
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(
+                        color: Theme.of(context)
+                            .primaryColorDark, // Couleur de la bordure
+                        width: 3.0, // Épaisseur de la bordure
+                      ),
                     ),
                     child: Stack(
+                      alignment: Alignment.center,
                       children: [
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            '  Préparation',
+                            ' Preparation sportive',
                             textAlign: TextAlign.left,
                             style: TextStyle(
-                              color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).primaryColorDark,
                               fontSize: 14.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        Center(
-                          child: Text(
-                            '0%',
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .primaryColor, // Choisir la couleur appropriée pour le texte
-                              fontSize:
-                                  40.0, // Ajuster la taille du texte selon vos préférences
-                              fontWeight: FontWeight.bold,
-                            ),
+                        SizedBox(
+                          width: 110, // Adjust the width as needed
+                          height: 110, // Adjust the height as needed
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SizedBox(
+                                width: 110, // Adjust the size of the gray part
+                                height: 110, // Adjust the size of the gray part
+                                child: CircularProgressIndicator(
+                                  value:
+                                      1.0, // Max value to create the gray part
+                                  strokeWidth: 20,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Theme.of(context).primaryColorLight,
+                                  ),
+                                ),
+                              ),
+                              Positioned.fill(
+                                child: CircularProgressIndicator(
+                                  value: 0.2, // 20% completion
+                                  strokeWidth: 20,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Theme.of(context).primaryColorDark,
+                                  ),
+                                ),
+                              ),
+                              Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.fitness_center,
+                                      size: 45,
+                                      color: Theme.of(context).primaryColorDark,
+                                    ),
+                                    Text(
+                                      '20%', // User's progress percentage
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -260,9 +349,91 @@ class ProfilePage extends StatelessWidget {
                 ),
               ],
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: Text(
+                'Les évènements à venir : ',
+                style: TextStyle(
+                  fontSize: 20.0, // Taille de la police
+                  fontWeight: FontWeight.bold, // Texte en gras
+                  color: Theme.of(context).primaryColorDark, // Couleur du texte
+                ),
+              ),
+            ),
+
+            for (var i = 0; i < 3 && i < _events.length; i++)
+              EventWidget(
+                icon: Icons.fitness_center,
+                title: 'Séance de sport',
+                time: '10:00 - 11:00',
+                description: 'Entraînement de musculation',
+                date: _events[i].date,
+              ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0, right: 16.0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Fond neutre
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(
+                      color:
+                          Theme.of(context).primaryColorDark, // Bord bleu foncé
+                      width: 2.0,
+                    ),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      // Naviguer vers la page d'ajout d'événement
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EventForm(),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.add,
+                            color: Theme.of(context).primaryColorDark),
+                        SizedBox(width: 8.0),
+                        Text(
+                          'Ajouter un événement',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColorDark),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+class Event {
+  final DateTime date;
+
+  Event(this.date);
+}
+
+List<Event> _events = [
+  Event(DateTime(2024, 3, 1)),
+  Event(DateTime(2024, 3, 16)),
+  Event(DateTime(2024, 3, 17)), // Un événement pour aujourd'hui
+  Event(DateTime(2024, 3, 17)), // Un événement pour demain
+  Event(DateTime(2024, 3, 18)), // Un événement pour le lendemain
+  // Ajoutez d'autres événements au besoin
+];
+
+bool isSameDay(DateTime date1, DateTime date2) {
+  return date1.year == date2.year &&
+      date1.month == date2.month &&
+      date1.day == date2.day;
 }

@@ -60,7 +60,7 @@ class _MyCalendarState extends State<MyCalendar> {
                             return Padding(
                               padding: EdgeInsets.symmetric(horizontal: 2),
                               child: Text(
-                                '🎉', // Emoji que vous souhaitez utiliser
+                                '🏆', // Emoji que vous souhaitez utiliser
                                 style: TextStyle(
                                     fontSize: 16), // Taille de l'emoji
                               ),
@@ -126,26 +126,42 @@ class EventWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 20),
+      padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Theme.of(context).primaryColor,
+        border: Border.all(
+          color: Theme.of(context).primaryColorLight,
+          width: 2,
+        ),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Icone
-          Container(
-            width: MediaQuery.of(context).size.width * 0.25,
-            child: Icon(
-              icon,
-              size: 40,
+          // Première colonne (icône)
+          Expanded(
+            flex: 3, // 30% de la largeur
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // Centrage horizontal
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Icon(
+                  icon,
+                  size: 50,
+                  color: Theme.of(context).primaryColorDark,
+                ),
+              ],
             ),
           ),
-          SizedBox(width: 10),
-          // Détails de l'événement
+
+          // Deuxième colonne (détails de l'événement)
           Expanded(
+            flex: 7, // 70% de la largeur
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
