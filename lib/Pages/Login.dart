@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // Importer la bibliothèque HTTP
 import 'dart:convert';
 
+import 'package:sport_rider/Pages/profil.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -11,6 +13,18 @@ class _LoginPageState extends State<LoginPage> {
   String authMessage = ''; // Message d'authentification à afficher
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  // Méthode pour naviguer vers la page de profil après une connexion réussie
+  void navigateToProfilePage(String id_doc) {
+    String id = "";
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ProfilePage(
+                id_doc: id_doc,
+              )),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +81,14 @@ class _LoginPageState extends State<LoginPage> {
                 if (response.statusCode == 200) {
                   // Authentification réussie
                   final email = emailController.text;
+                  print(jsonDecode(response.body)['documentReference']);
+
+                  var id = jsonDecode(response.body)['documentReference'];
+                  // Mettre à jour la variable id du state
+                  setState(() {
+                    id = id;
+                  });
+                  // je veux initialiser le string dans login page en mode widget.id = jsonDecode(response.body)['documentReference']
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -77,6 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
+                              navigateToProfilePage(id);
                             },
                             child: Text('OK'),
                           ),

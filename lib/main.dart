@@ -1,90 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:sport_rider/Pages/AjoutEvent.dart';
-import 'package:sport_rider/Pages/Bottom.dart';
-import 'package:sport_rider/Pages/Calendar.dart';
-import 'package:sport_rider/Pages/Sport.dart';
 import 'package:sport_rider/Pages/profil.dart';
-import 'package:sport_rider/Pages/questionnaireProfil.dart';
 import 'themes.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:firedart/firedart.dart';
 import 'Pages/Login.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  // Initialisez Firebase avec la clé d'API et le gestionnaire de jetons
+  final firebase = Firestore.initialize('data-5b679');
+  var tokenStore = MyCustomTokenStore();
+  final firebaseAuth = FirebaseAuth.initialize(
+      'AIzaSyDRzzZT9gYFShI9OnWuosB80SXtEDg4p2c', tokenStore);
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: myTheme,
-      home: ProfilePage(),
+      home: LoginPage(), // Redirection en fonction de la connexion
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class MyCustomTokenStore implements TokenStore {
+  String? _token;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ProfilePage(),
-      ),
-    );
+  Future<void> clear() async {
+    _token = null;
   }
-}
 
-Future<List<dynamic>> fetchComptes() async {
-  final response = await http.get(Uri.parse('http://localhost:8080/comptes'));
-
-  if (response.statusCode == 200) {
-    return json.decode(response.body);
-  } else {
-    throw Exception('Failed to load comptes');
-  }
-}
-
-class ComptesWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Liste des comptes'),
-      ),
-      body: FutureBuilder<List<dynamic>>(
-        future: fetchComptes(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Erreur : ${snapshot.error}');
-          } else {
-            final comptes = snapshot.data!;
-            return ListView.builder(
-              itemCount: comptes.length,
-              itemBuilder: (context, index) {
-                final compte = comptes[index];
-                return ListTile(
-                  title: Text(compte['email']),
-                );
-              },
-            );
-          }
-        },
-      ),
-    );
+  void delete() {
+    // TODO: implement delete
+  }
+
+  @override
+  void expireToken() {
+    // TODO: implement expireToken
+  }
+
+  @override
+  // TODO: implement expiry
+  DateTime? get expiry => throw UnimplementedError();
+
+  @override
+  // TODO: implement hasToken
+  bool get hasToken => throw UnimplementedError();
+
+  @override
+  // TODO: implement idToken
+  String? get idToken => throw UnimplementedError();
+
+  @override
+  Token? read() {
+    return _token != null
+        ? Token(
+            _token!,
+            DateTime.now().add(const Duration(hours: 1)).toString(),
+            DateTime.now().toString(),
+            DateTime.now())
+        : null;
+  }
+
+  @override
+  // TODO: implement refreshToken
+  String? get refreshToken => throw UnimplementedError();
+
+  @override
+  void setToken(
+      String? userId, String idToken, String refreshToken, int expiresIn) {
+    // TODO: implement setToken
+  }
+
+  @override
+  // TODO: implement userId
+  String? get userId => throw UnimplementedError();
+
+  @override
+  void write(Token? token) {
+    if (token != null) {
+      _token = token as String?;
+    }
   }
 }

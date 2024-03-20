@@ -2,11 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class EventForm extends StatefulWidget {
+  final String id_document;
+
+  EventForm({this.id_document = ''});
   @override
   _EventFormState createState() => _EventFormState();
 }
 
 class _EventFormState extends State<EventForm> {
+  late String id_doc;
+
+  @override
+  void initState() {
+    super.initState();
+    id_doc = widget.id_document;
+  }
+
   String title = '';
   String description = '';
   DateTime? selectedDate;

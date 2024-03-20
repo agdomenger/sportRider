@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:sport_rider/Pages/Bottom.dart';
 
 class SportPage extends StatefulWidget {
+  final String id_doc; // L'ID ddu document firebase
+  SportPage({required this.id_doc});
   @override
   _SportPageState createState() => _SportPageState();
 }
@@ -89,7 +91,9 @@ class _SportPageState extends State<SportPage> {
           ),
         ),
       ),
-      bottomNavigationBar: MyBottomNavigationBar(),
+      bottomNavigationBar: MyBottomNavigationBar(
+        id_doc: widget.id_doc,
+      ),
     );
   }
 }

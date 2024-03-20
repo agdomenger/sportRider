@@ -5,6 +5,10 @@ import 'package:sport_rider/Pages/Sport.dart';
 import 'package:sport_rider/Pages/questionnaireProfil.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
+  final String id_doc; // L'ID de la page
+
+  MyBottomNavigationBar({required this.id_doc});
+
   // Fonction pour créer un élément BottomNavigationBarItem avec une icône spécifique
   BottomNavigationBarItem _createBottomNavItem(
       IconData icon, BuildContext context) {
@@ -39,13 +43,19 @@ class MyBottomNavigationBar extends StatelessWidget {
           case 0:
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyCalendar()),
+              MaterialPageRoute(
+                  builder: (context) => MyCalendar(
+                        id_doc: id_doc,
+                      )),
             );
             break;
           case 1:
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SportPage()),
+              MaterialPageRoute(
+                  builder: (context) => SportPage(
+                        id_doc: id_doc,
+                      )),
             );
             break;
           case 2:
