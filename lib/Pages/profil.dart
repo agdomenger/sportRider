@@ -6,6 +6,7 @@ import 'package:sport_rider/Pages/Bottom.dart';
 import 'package:http/http.dart' as http;
 import 'package:sport_rider/Pages/Calendar.dart';
 import 'package:sport_rider/Pages/questionnaireProfil.dart';
+import 'package:sport_rider/Widgets/Horse.dart';
 
 class ProfilePage extends StatefulWidget {
   final String id_doc; // L'ID du document Firebase
@@ -16,9 +17,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late Future<Map<String, dynamic>> _userData = _fetchUserData();
-  String _userName =
-      'John Doe'; // Nom de l'utilisateur (à remplacer par les données réelles)
-  String _email = 'utilisateur@example.com';
 
   Future<Map<String, dynamic>> _fetchUserData() async {
     final response = await http
@@ -49,7 +47,16 @@ class _ProfilePageState extends State<ProfilePage> {
               );
             } else {
               final userData = snapshot.data!;
+              List<dynamic> equides = userData['equides'] ?? [];
               final email = userData['email'] as String;
+              final userName = userData['nom'] as String;
+              final userSurname = userData['prenom'] as String;
+
+              final horseName =
+                  equides[0]['nom'].toString() ?? "Ajouter un équidé";
+              final horseElevage = equides[0]['elevage'].toString() ?? "";
+              final horseYear =
+                  equides[0]['anneeNaissance'].toString() ?? "non communiqué";
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Column(
@@ -141,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(height: 16),
                     // Informations utilisateur
                     Text(
-                      'Bienvenue $_userName',
+                      'Bienvenue $userName  $userSurname',
                       style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -163,73 +170,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         Expanded(
                           child: Column(
                             children: [
-                              Container(
-                                padding: EdgeInsets.all(4.0),
-                                margin: EdgeInsets.all(4.0),
-                                height: 86,
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  border: Border.all(
-                                    color: Theme.of(context)
-                                        .shadowColor, // Couleur de la bordure
-                                    width: 3.0, // Épaisseur de la bordure
-                                  ),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '[Nom cheval]',
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              color:
-                                                  Theme.of(context).shadowColor,
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            'amateur4 cso',
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                              color:
-                                                  Theme.of(context).shadowColor,
-                                              fontSize: 12.0,
-                                              fontStyle: FontStyle.italic,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Container(
-                                        width:
-                                            70, // Largeur du conteneur principal
-                                        height:
-                                            70, // Hauteur du conteneur principal
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Theme.of(context).shadowColor,
-                                        ),
-                                        child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: Image.asset(
-                                            '/Users/domenger/Desktop/P2i/sport_rider/assets/saut.png',
-                                            // Hauteur de l'icône à l'intérieur du rond blanc
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              HorseWidget(
+                                  nom: horseName,
+                                  elevage: horseElevage,
+                                  annee: horseYear),
                               SizedBox(height: 4),
                               InkWell(
                                 onTap: () {
