@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:sport_rider/Pages/Calendar.dart';
 import 'package:sport_rider/Pages/questionnaireProfil.dart';
 import 'package:sport_rider/Widgets/Horse.dart';
+import 'package:sport_rider/Widgets/event.dart';
+import 'package:sport_rider/Widgets/eventList.dart';
 
 class ProfilePage extends StatefulWidget {
   final String id_doc; // L'ID du document Firebase
@@ -49,14 +51,16 @@ class _ProfilePageState extends State<ProfilePage> {
               final userData = snapshot.data!;
               List<dynamic> equides = userData['equides'] ?? [];
               final email = userData['email'] as String;
-              final userName = userData['nom'] as String;
-              final userSurname = userData['prenom'] as String;
-
-              final horseName =
-                  equides[0]['nom'].toString() ?? "Ajouter un équidé";
-              final horseElevage = equides[0]['elevage'].toString() ?? "";
-              final horseYear =
-                  equides[0]['anneeNaissance'].toString() ?? "non communiqué";
+              final userName = userData['nom'] as String ?? "";
+              final userSurname = userData['prenom'] as String ?? "";
+              String horseName = "Ajouter un équidé";
+              String horseElevage = "";
+              String horseYear = "non communiqué";
+              if (equides.isNotEmpty) {
+                horseName = equides[0]['nom'].toString();
+                horseElevage = equides[0]['elevage'].toString();
+                horseYear = equides[0]['anneeNaissance'].toString();
+              }
               return Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Column(
@@ -332,7 +336,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   .primaryColorDark,
                                             ),
                                             Text(
-                                              '20%', // User's progress percentage
+                                              '0%', // User's progress percentage
                                               style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,
@@ -357,22 +361,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Text(
                         'Les évènements à venir : ',
                         style: TextStyle(
-                          fontSize: 20.0, // Taille de la police
-                          fontWeight: FontWeight.bold, // Texte en gras
-                          color: Theme.of(context)
-                              .primaryColorDark, // Couleur du texte
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColorDark,
                         ),
                       ),
                     ),
-
-                    for (var i = 0; i < 3 && i < _events.length; i++)
-                      EventWidget(
-                        icon: Icons.fitness_center,
-                        title: 'Séance de sport',
-                        time: '10:00 - 11:00',
-                        description: 'Entraînement de musculation',
-                        date: _events[i].date,
-                      ),
+                    EventListWidget(
+                        userData: userData, numberOfEventsToShow: 3),
                     Padding(
                       padding: const EdgeInsets.only(top: 6.0, right: 16.0),
                       child: Align(
