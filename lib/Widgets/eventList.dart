@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sport_rider/Widgets/event.dart';
 
 class EventListWidget extends StatelessWidget {
@@ -20,8 +21,17 @@ class EventListWidget extends StatelessWidget {
         ),
       );
     } else {
-      events.sort((a, b) =>
-          DateTime.parse(a['date']).compareTo(DateTime.parse(b['date'])));
+      events.sort((a, b) {
+        print('Type de a["date"]: ${a["date"].runtimeType}');
+        print('Type de b["date"]: ${b["date"].runtimeType}');
+
+        final DateFormat dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+
+        final DateTime dateTimeA = dateFormat.parse(a['date']);
+        final DateTime dateTimeB = dateFormat.parse(b['date']);
+
+        return dateTimeA.compareTo(dateTimeB);
+      });
 
       final numberOfEvents = numberOfEventsToShow ?? events.length;
       final displayedEvents = events.take(numberOfEvents).toList();
@@ -30,8 +40,7 @@ class EventListWidget extends StatelessWidget {
         children: displayedEvents.map<Widget>((event) {
           return EventWidget(
             icon: Icons.fitness_center,
-            title: event['title'],
-            time: event['time'],
+            title: event['titre'],
             description: event['description'],
             date: event['date'],
           );

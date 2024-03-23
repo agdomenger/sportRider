@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:sport_rider/Pages/profil.dart';
 
 class EventForm extends StatefulWidget {
   final String id_document;
 
-  EventForm({this.id_document = ''});
+  EventForm({required this.id_document});
   @override
   _EventFormState createState() => _EventFormState();
 }
@@ -64,6 +67,7 @@ class _EventFormState extends State<EventForm> {
 
   @override
   Widget build(BuildContext context) {
+    print('voici l id du doc: $id_doc ');
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -340,7 +344,56 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
-  void _showAddEventPopup() {
-    // Code pour afficher le pop-up d'ajout d'événement
+  void _showAddEventPopup() async {
+    // Récupérer les détails de l'événement depuis les états de votre formulaire
+    final evenement = {
+      'titre': title,
+      'description': description,
+      'date': selectedDate != null ? selectedDate!.toString() : null,
+    };
+
+    // Appel de la fonction pour ajouter l'événement à la base de données
+    await addEventToDatabase(id_doc, evenement);
+
+    // Après l'ajout réussi, retournez à la page de profil
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfilePage(id_doc: id_doc),
+      ),
+    );
+  }
+}
+
+Future<void> addEventToDatabase(
+    String compteId, Map<String, dynamic> evenement) async {
+  final url = Uri.parse('http://localhost:8080/evenements');
+  final headers = {
+    'Content-Type': 'application/json',
+  };
+  final requestBody = {
+    'compteId': compteId,
+    'evenement': evenement,
+  };
+
+  print(requestBody['compteId']);
+
+  try {
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 201) {
+      // L'événement a été ajouté avec succès
+      print('L\'événement a été ajouté avec succès.');
+    } else {
+      // Erreur lors de l'ajout de l'événement
+      print('Erreur lors de l\'ajout de l\'événement: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Gestion des erreurs lors de l'envoi de la requête
+    print('Erreur lors de l\'envoi de la requête: $e');
   }
 }

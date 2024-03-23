@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http; // Importer la bibliothèque HTTP
 import 'dart:convert';
 
 import 'package:sport_rider/Pages/profil.dart';
+import 'package:sport_rider/Pages/signup.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,6 +14,13 @@ class _LoginPageState extends State<LoginPage> {
   String authMessage = ''; // Message d'authentification à afficher
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  void navigateToSignUpPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SignupPage()),
+    );
+  }
 
   // Méthode pour naviguer vers la page de profil après une connexion réussie
   void navigateToProfilePage(String id_doc) {
@@ -130,7 +138,18 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             SizedBox(height: 16.0),
-            // ... (votre code pour le bouton Sign up)
+            GestureDetector(
+              onTap:
+                  navigateToSignUpPage, // Appeler la méthode lorsque l'utilisateur tape sur le texte
+              child: Text(
+                "Si vous n'avez pas de compte, inscrivez-vous",
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
           ],
         ),
       ),

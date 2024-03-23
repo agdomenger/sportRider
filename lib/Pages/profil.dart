@@ -1,9 +1,8 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:sport_rider/Pages/AjoutEvent.dart';
 import 'package:sport_rider/Pages/Bottom.dart';
-import 'package:http/http.dart' as http;
 import 'package:sport_rider/Pages/Calendar.dart';
 import 'package:sport_rider/Pages/questionnaireProfil.dart';
 import 'package:sport_rider/Widgets/Horse.dart';
@@ -390,7 +389,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EventForm(),
+                                  builder: (context) =>
+                                      EventForm(id_document: widget.id_doc),
                                 ),
                               );
                             },
