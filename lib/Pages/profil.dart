@@ -417,10 +417,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               );
-              bottomNavigationBar:
-              MyBottomNavigationBar(id_doc: widget.id_doc);
             }
           }),
+      bottomNavigationBar: MyBottomNavigationBar(id_doc: widget.id_doc),
     );
   }
 }
