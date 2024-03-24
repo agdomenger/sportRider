@@ -91,9 +91,6 @@ class _SportPageState extends State<SportPage> {
           ),
         ),
       ),
-      bottomNavigationBar: MyBottomNavigationBar(
-        id_doc: widget.id_doc,
-      ),
     );
   }
 }

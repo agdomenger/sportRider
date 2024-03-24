@@ -1,23 +1,43 @@
 import 'package:flutter/material.dart';
 
 class EventWidget extends StatelessWidget {
-  final IconData icon;
   final String title;
   final String description;
   final String date;
+  final String tag;
 
   const EventWidget({
     Key? key,
-    required this.icon,
     required this.title,
     required this.description,
     required this.date,
+    required this.tag,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     String day = date.split('-')[2].split('T')[0];
     String month = getMonthName(int.parse(date.split('-')[1]));
+    String emoji;
+    switch (tag) {
+      case 'concours':
+        emoji = '🏆'; // Emoji pour un concours
+        break;
+      case 'mental':
+        emoji = '💡'; // Emoji pour le mental
+        break;
+      case 'sport':
+        emoji = '🏋️'; // Emoji pour le sport
+        break;
+      case 'cheval':
+        emoji = '🐎'; // Emoji pour le cheval
+        break;
+      case 'balade':
+        emoji = '🍃'; // Emoji pour la balade
+        break;
+      default:
+        emoji = '📅'; // Emoji par défaut
+    }
     return Container(
       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 20),
       padding: EdgeInsets.all(4),
@@ -32,7 +52,7 @@ class EventWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Première colonne (icône)
+          // Première colonne (emoji)
           Expanded(
             flex: 3, // 30% de la largeur
             child: Column(
@@ -40,24 +60,15 @@ class EventWidget extends StatelessWidget {
               crossAxisAlignment:
                   CrossAxisAlignment.center, // Centrage horizontal
               children: [
-                SizedBox(
-                  height: 10,
-                ),
-                Icon(
-                  icon,
-                  size: 50,
-                  color: Theme.of(context).primaryColorDark,
+                Text(
+                  emoji,
+                  style: TextStyle(fontSize: 40),
                 ),
               ],
             ),
           ),
 
           // Deuxième colonne (détails de l'événement)
-          // Deuxième colonne (détails de l'événement)
-          // Deuxième colonne (détails de l'événement)
-          // Extraire le jour et le mois de la date
-
-// Deuxième colonne (détails de l'événement)
           Expanded(
             flex: 7, // 70% de la largeur
             child: Column(

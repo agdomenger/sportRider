@@ -39,7 +39,7 @@ class EventListWidget extends StatelessWidget {
       return Column(
         children: displayedEvents.map<Widget>((event) {
           return EventWidget(
-            icon: Icons.fitness_center,
+            tag: event['tag'],
             title: event['titre'],
             description: event['description'],
             date: event['date'],

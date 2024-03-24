@@ -94,14 +94,23 @@ class _MyCalendarState extends State<MyCalendar> {
                             bottom: 0,
                             child: Row(
                               children: events.map((event) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 2),
-                                  child: Text(
-                                    '🏆', // Emoji que vous souhaitez utiliser
-                                    style: TextStyle(
-                                        fontSize: 16), // Taille de l'emoji
-                                  ),
-                                );
+                                if (event is Map<String, dynamic>) {
+                                  final tag = event['tag'] as String?;
+                                  if (tag != null) {
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 2),
+                                      child: Text(
+                                        getEventEmoji(
+                                            tag), // Emoji que vous souhaitez utiliser
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ), // Taille de l'emoji
+                                      ),
+                                    );
+                                  }
+                                }
+                                return SizedBox.shrink();
                               }).toList(),
                             ),
                           );
@@ -138,4 +147,21 @@ bool isSameDay(DateTime date1, DateTime date2) {
   return date1.year == date2.year &&
       date1.month == date2.month &&
       date1.day == date2.day;
+}
+
+String getEventEmoji(String tag) {
+  switch (tag) {
+    case 'concours':
+      return '🏆'; // Emoji pour un concours
+    case 'mental':
+      return '💡'; // Emoji pour le mental
+    case 'sport':
+      return '🏋️'; // Emoji pour le sport
+    case 'cheval':
+      return '🐎'; // Emoji pour le cheval
+    case 'balade':
+      return '🍃'; // Emoji pour la balade
+    default:
+      return '📅'; // Emoji par défaut
+  }
 }

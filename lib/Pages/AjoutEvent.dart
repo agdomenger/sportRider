@@ -229,13 +229,13 @@ class _EventFormState extends State<EventForm> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          subEventType = 'Autre';
+                          subEventType = 'concours';
                         });
                       },
-                      style: subEventType == 'Autre'
+                      style: subEventType == 'concours'
                           ? selectedButtonStyle()
                           : unselectedButtonStyle(),
-                      child: Text('Autre'),
+                      child: Text('concours'),
                     ),
                   ],
                 ),
@@ -258,13 +258,13 @@ class _EventFormState extends State<EventForm> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          subEventType = 'Médiation';
+                          subEventType = 'Méditation';
                         });
                       },
-                      style: subEventType == 'Médiation'
+                      style: subEventType == 'Méditation'
                           ? selectedButtonStyle()
                           : unselectedButtonStyle(),
-                      child: Text('Médiation'),
+                      child: Text('Méditation'),
                     ),
                   ],
                 ),
@@ -345,11 +345,39 @@ class _EventFormState extends State<EventForm> {
   }
 
   void _showAddEventPopup() async {
+    String tag = '';
+
+    // Déterminer le tag en fonction de la sélection de l'utilisateur
+    if (eventType == 'Équestre') {
+      if (subEventType == 'Saut' || subEventType == 'Dressage') {
+        tag = 'cheval';
+      } else if (subEventType == 'Balade') {
+        tag = 'balade';
+      } else if (subEventType == 'concours') {
+        tag = 'concours';
+      }
+    } else if (eventType == 'Mentale') {
+      if (subEventType == 'Preparation concours' ||
+          subEventType == 'Méditation') {
+        tag = 'mental';
+      }
+    } else if (eventType == 'Physique') {
+      if (subEventType == 'Entrainement' ||
+          subEventType == 'Footing' ||
+          subEventType == 'Salle de sport' ||
+          subEventType == 'Autre') {
+        tag = 'sport';
+      }
+    } else {
+      tag = 'autre';
+    }
+
     // Récupérer les détails de l'événement depuis les états de votre formulaire
     final evenement = {
       'titre': title,
       'description': description,
       'date': selectedDate != null ? selectedDate!.toString() : null,
+      'tag': tag, // Ajouter le tag
     };
 
     // Appel de la fonction pour ajouter l'événement à la base de données
