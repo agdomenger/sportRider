@@ -236,23 +236,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ),
                                       ),
                                       // Colonne pour l'icône
-                                      Expanded(
-                                        flex: 4, // 40% de la largeur
-                                        child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Container(
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color:
-                                                  Theme.of(context).canvasColor,
-                                            ),
-                                            child: Icon(
-                                              Icons.warning,
-                                              color: Colors.white,
-                                              size: 24.0,
-                                            ),
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: Container(
+                                          width: 70,
+                                          height: 70,
+                                          child: Text(
+                                            "⚠️",
+                                            style: TextStyle(
+                                                fontSize: 60,
+                                                color: Color.fromARGB(
+                                                    255, 255, 149, 2)),
                                           ),
                                         ),
                                       ),

@@ -50,19 +50,13 @@ class HorseWidget extends StatelessWidget {
             ),
           ),
           Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.topRight,
             child: Container(
               width: 70,
               height: 70,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).shadowColor,
-              ),
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Image.asset(
-                  '/Users/domenger/Desktop/P2i/sport_rider/assets/saut.png',
-                ),
+              child: Text(
+                "🐴",
+                style: TextStyle(fontSize: 60),
               ),
             ),
           ),
