@@ -55,6 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
               String horseName = "Ajouter un équidé";
               String horseElevage = "";
               String horseYear = "non communiqué";
+              double pourcentage = calculatePercentage(userData);
               if (equides.isNotEmpty) {
                 horseName = equides[0]['nom'].toString();
                 horseElevage = equides[0]['elevage'].toString();
@@ -315,7 +316,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       Positioned.fill(
                                         child: CircularProgressIndicator(
-                                          value: 0.2, // 20% completion
+                                          value: pourcentage /
+                                              100, // 20% completion
                                           strokeWidth: 20,
                                           valueColor:
                                               AlwaysStoppedAnimation<Color>(
@@ -335,7 +337,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   .primaryColorDark,
                                             ),
                                             Text(
-                                              '0%', // User's progress percentage
+                                              '$pourcentage %', // User's progress percentage
                                               style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.bold,
@@ -443,4 +445,44 @@ bool isSameDay(DateTime date1, DateTime date2) {
   return date1.year == date2.year &&
       date1.month == date2.month &&
       date1.day == date2.day;
+}
+
+double calculatePercentage(Map<String, dynamic> userData) {
+  // Vérifier si les données utilisateur contiennent la liste des entraînements
+  if (userData.containsKey('entrainements')) {
+    // Récupérer la liste des entraînements depuis les données utilisateur
+    List<dynamic> entrainements = userData['entrainements'];
+
+    // Initialiser le nombre total d'exercices et le nombre d'exercices vrais
+    int totalExercises = 0;
+    int trueExercises = 0;
+
+    // Parcourir chaque entraînement
+    for (var entrainement in entrainements) {
+      // Récupérer la liste des exercices de l'entraînement
+      List<dynamic> exerciceIds = entrainement['exerciceIds'] ?? [];
+
+      // Mettre à jour le nombre total d'exercices
+      totalExercises += exerciceIds.length;
+
+      // Parcourir chaque exercice ID
+      for (var exerciseId in exerciceIds) {
+        // Récupérer les données de l'exercice par son ID
+
+        // Extraire le statut de l'exercice de la réponse
+        var exerciseStatus = exerciseId['status'];
+        // Vérifier si le statut de l'exercice est true
+        if (exerciseStatus == true) {
+          trueExercises++;
+        }
+      }
+    }
+
+    // Calculer le pourcentage d'exercices avec le statut true
+    double percentage = (trueExercises / totalExercises) * 100;
+
+    return percentage;
+  } else {
+    throw Exception('Entrainements data not found in user data');
+  }
 }
