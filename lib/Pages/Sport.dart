@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:sport_rider/Widgets/generateur_entrainement.dart';
 
 class SportPage extends StatefulWidget {
   final String id_doc; // L'ID du document Firebase
@@ -52,6 +53,7 @@ class _SportPageState extends State<SportPage> {
             } else {
               final userData = snapshot.data!;
               List<dynamic> entrainements = userData['entrainements'] ?? [];
+              double pourcentage = calculatePercentage(userData);
               return SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -75,7 +77,7 @@ class _SportPageState extends State<SportPage> {
                           ),
                           Positioned.fill(
                             child: CircularProgressIndicator(
-                              value: 0.2, // 20% completion
+                              value: pourcentage / 100, // 20% completion
                               strokeWidth: 20,
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 Theme.of(context).primaryColorDark,
@@ -92,7 +94,7 @@ class _SportPageState extends State<SportPage> {
                                   color: Theme.of(context).primaryColorDark,
                                 ),
                                 Text(
-                                  '20%', // User's progress percentage
+                                  " $pourcentage %", // User's progress percentage
                                   style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -110,11 +112,14 @@ class _SportPageState extends State<SportPage> {
                     for (var i = 0; i < entrainements.length; i++)
                       TrainingRectangle(
                         title: 'Entraînement ${i + 1}',
+                        id_doc: widget.id_doc,
+                        ind: i,
                         exercises: entrainements[i]['exerciceIds'] ?? [],
                         // Assurez-vous que exercises ne soit pas null
                       ),
 
                     SizedBox(height: 20),
+                    CreerEntrainement(idDoc: widget.id_doc)
                   ],
                 ),
               );
@@ -129,17 +134,20 @@ class _SportPageState extends State<SportPage> {
 class TrainingRectangle extends StatelessWidget {
   final String title;
   final List<dynamic> exercises;
+  final String id_doc;
+  final int ind;
 
-  const TrainingRectangle({
-    required this.title,
-    required this.exercises,
-  });
+  const TrainingRectangle(
+      {required this.title,
+      required this.exercises,
+      required this.id_doc,
+      required this.ind});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _showTrainingMenu(context, exercises);
+        _showTrainingMenu(context, exercises, ind);
       },
       child: Container(
         margin:
@@ -158,7 +166,8 @@ class TrainingRectangle extends StatelessWidget {
     );
   }
 
-  void _showTrainingMenu(BuildContext context, List<dynamic> exercises) {
+  void _showTrainingMenu(
+      BuildContext context, List<dynamic> exercises, int index) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -175,18 +184,26 @@ class TrainingRectangle extends StatelessWidget {
                     exercise['description'] ?? 'Description missing',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  trailing: Icon(
-                    Icons.check_circle,
-                    color: Colors.grey,
-                  ),
+                  trailing: exercise['status'] == true
+                      ? Icon(
+                          Icons.check_circle,
+                          color: Colors
+                              .green, // Change color to green if status is true
+                        )
+                      : Icon(
+                          Icons.check_circle,
+                          color: Colors
+                              .grey, // Keep color as grey if status is false
+                        ),
                   onTap: () {
                     // Action when the exercise is tapped
                   },
                 ),
+
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  // Action when "Start this training" button is pressed
+                  _TrainingStart(context, exercises, index, id_doc);
                 },
                 child: Text('Start this training'),
               ),
@@ -195,5 +212,132 @@ class TrainingRectangle extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _TrainingStart(
+      BuildContext context, List<dynamic> exercises, int index, String id_doc) {
+    int currentExerciseIndex = 0; // Index de l'exercice en cours
+    Navigator.pop(context);
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            void nextExercise() async {
+              // Mettre à jour le statut de l'exercice dans la base de données
+              if (currentExerciseIndex < exercises.length) {
+                print(exercises[currentExerciseIndex]);
+                final exerciseId = exercises[currentExerciseIndex]['id'];
+                await updateExerciseStatus(exerciseId, id_doc, index);
+              }
+              setState(() {
+                // Passer à l'exercice suivant
+                if (currentExerciseIndex < exercises.length - 1) {
+                  currentExerciseIndex++;
+                } else {
+                  Navigator.pushReplacement(
+                    // Revenir à la page SportPage
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SportPage(id_doc: id_doc),
+                    ),
+                  );
+                }
+              });
+            }
+
+            final exercise = exercises[currentExerciseIndex];
+            return Container(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    title: Text(
+                      exercise['description'] ?? 'Description manquante',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text("X 5"),
+                    trailing: ElevatedButton(
+                      onPressed: nextExercise,
+                      child: Text('Exercice fini'),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+Future<void> updateExerciseStatus(
+    String exerciseId, String idCmpt, int index) async {
+  try {
+    print("///////////////////////////////////");
+    print(index);
+    print(exerciseId);
+    print(idCmpt);
+    final response = await http.put(
+      Uri.parse('http://localhost:8080/exercices/$exerciseId'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'idCompte': idCmpt,
+        'index': index,
+        'status': "true", // Mettre à jour le statut à true
+      }),
+    );
+    if (response.statusCode == 200) {
+      // La mise à jour a réussi
+      print('Exercise status updated successfully');
+    } else {
+      // La mise à jour a échoué
+      print('Failed to update exercise status');
+    }
+  } catch (e) {
+    // Une erreur s'est produite lors de la mise à jour
+    print('Error updating exercise status: $e');
+  }
+}
+
+double calculatePercentage(Map<String, dynamic> userData) {
+  // Vérifier si les données utilisateur contiennent la liste des entraînements
+  if (userData.containsKey('entrainements')) {
+    // Récupérer la liste des entraînements depuis les données utilisateur
+    List<dynamic> entrainements = userData['entrainements'];
+
+    // Initialiser le nombre total d'exercices et le nombre d'exercices vrais
+    int totalExercises = 0;
+    int trueExercises = 0;
+
+    // Parcourir chaque entraînement
+    for (var entrainement in entrainements) {
+      // Récupérer la liste des exercices de l'entraînement
+      List<dynamic> exerciceIds = entrainement['exerciceIds'] ?? [];
+
+      // Mettre à jour le nombre total d'exercices
+      totalExercises += exerciceIds.length;
+
+      // Parcourir chaque exercice ID
+      for (var exerciseId in exerciceIds) {
+        // Récupérer les données de l'exercice par son ID
+
+        // Extraire le statut de l'exercice de la réponse
+        var exerciseStatus = exerciseId['status'];
+        // Vérifier si le statut de l'exercice est true
+        if (exerciseStatus == true) {
+          trueExercises++;
+        }
+      }
+    }
+
+    // Calculer le pourcentage d'exercices avec le statut true
+    double percentage = (trueExercises / totalExercises) * 100;
+
+    return percentage;
+  } else {
+    throw Exception('Entrainements data not found in user data');
   }
 }

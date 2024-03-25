@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math';
 
+import 'package:sport_rider/Pages/Sport.dart';
+
 class CreerEntrainement extends StatefulWidget {
   final String idDoc;
 
@@ -51,7 +53,15 @@ class _CreerEntrainementState extends State<CreerEntrainement> {
 
         if (trainingResponse.statusCode == 201) {
           // L'entraînement a été créé avec succès
-          print('Entraînement créé avec succès !');
+          print(
+              'Entraînement créé avec succès !'); // Retourner à la page précédente
+          Navigator.pushReplacement(
+            // Revenir à la page SportPage
+            context,
+            MaterialPageRoute(
+              builder: (context) => SportPage(id_doc: widget.idDoc),
+            ),
+          );
         } else {
           // Erreur lors de la création de l'entraînement
           print('Erreur lors de la création de l\'entraînement.');
