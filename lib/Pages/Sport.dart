@@ -114,6 +114,7 @@ class _SportPageState extends State<SportPage> {
                         title: 'Entraînement ${i + 1}',
                         id_doc: widget.id_doc,
                         ind: i,
+                        data: userData,
                         exercises: entrainements[i]['exerciceIds'] ?? [],
                         // Assurez-vous que exercises ne soit pas null
                       ),
@@ -136,31 +137,45 @@ class TrainingRectangle extends StatelessWidget {
   final List<dynamic> exercises;
   final String id_doc;
   final int ind;
+  final Map<String, dynamic> data;
 
   const TrainingRectangle(
       {required this.title,
       required this.exercises,
       required this.id_doc,
-      required this.ind});
+      required this.ind,
+      required this.data});
 
   @override
   Widget build(BuildContext context) {
+    bool allExercisesCompleted = checkAllExercisesStatus(data, ind);
+
     return GestureDetector(
       onTap: () {
         _showTrainingMenu(context, exercises, ind);
       },
       child: Container(
-        margin:
-            EdgeInsets.symmetric(vertical: 10), // Adjust the vertical spacing
+        margin: EdgeInsets.symmetric(vertical: 10),
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           border:
               Border.all(color: Theme.of(context).primaryColorDark, width: 2),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: ListTile(
-          title: Text(title),
-          leading: Icon(Icons.add),
+        child: Row(
+          children: [
+            Expanded(
+              child: ListTile(
+                title: Text(title),
+                leading: Icon(Icons.add),
+              ),
+            ),
+            if (allExercisesCompleted)
+              Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+          ],
         ),
       ),
     );
@@ -339,5 +354,40 @@ double calculatePercentage(Map<String, dynamic> userData) {
     return percentage;
   } else {
     throw Exception('Entrainements data not found in user data');
+  }
+}
+
+bool checkAllExercisesStatus(Map<String, dynamic> userData, int trainingIndex) {
+  // Vérifier si les données utilisateur contiennent la liste des entraînements
+  if (userData.containsKey('entrainements')) {
+    // Récupérer la liste des entraînements depuis les données utilisateur
+    List<dynamic> entrainements = userData['entrainements'];
+
+    // Vérifier si l'indice de l'entraînement est valide
+    if (trainingIndex >= 0 && trainingIndex < entrainements.length) {
+      // Récupérer l'entraînement correspondant à l'indice spécifié
+      var entrainement = entrainements[trainingIndex];
+
+      // Vérifier si l'entraînement contient des exercices
+      if (entrainement.containsKey('exerciceIds')) {
+        // Récupérer la liste des exercices de l'entraînement
+        List<dynamic> exerciceIds = entrainement['exerciceIds'];
+
+        // Parcourir chaque exercice de l'entraînement
+        for (var exerciseId in exerciceIds) {
+          // Vérifier si le statut de l'exercice est true
+          if (exerciseId['status'] != true) {
+            return false; // Si un exercice a un statut différent de true, retourner faux
+          }
+        }
+        return true; // Si tous les exercices ont un statut true, retourner vrai
+      } else {
+        throw Exception('Exercise IDs not found in training data');
+      }
+    } else {
+      throw Exception('Invalid training index');
+    }
+  } else {
+    throw Exception('Trainings data not found in user data');
   }
 }

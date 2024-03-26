@@ -44,6 +44,12 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Image(
+              image: AssetImage('assets/logo.png'),
+              width: 300,
+              height: 300,
+            ),
+            SizedBox(height: 20),
             TextField(
               controller: emailController,
               decoration: InputDecoration(
@@ -118,11 +124,11 @@ class _LoginPageState extends State<LoginPage> {
                 } else {
                   // Authentification échouée
                   setState(() {
-                    authMessage = 'Authentication failed. Please try again.';
+                    authMessage = 'Authentication refusée. Essayez à nouveau.';
                   });
                 }
               },
-              child: Text('Login'),
+              child: Text('connectez-vous'),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Theme.of(context).primaryColor,
                 backgroundColor: Theme.of(context).primaryColorDark,
@@ -132,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
             Text(
               authMessage,
               style: TextStyle(
-                color: Colors.white,
+                color: Theme.of(context).canvasColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               ),

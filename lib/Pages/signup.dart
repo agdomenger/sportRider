@@ -12,6 +12,12 @@ class SignupPage extends StatelessWidget {
     TextEditingController nomController = TextEditingController();
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    void navigateToLoginUpPage() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -21,6 +27,12 @@ class SignupPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            Image(
+              image: AssetImage('assets/logo.png'),
+              width: 300,
+              height: 300,
+            ),
+            SizedBox(height: 20),
             CustomTextField(
               label: 'Nom',
               controller: nomController,
@@ -81,6 +93,18 @@ class SignupPage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Theme.of(context).primaryColor,
                 backgroundColor: Theme.of(context).primaryColorDark,
+              ),
+            ),
+            GestureDetector(
+              onTap:
+                  navigateToLoginUpPage, // Appeler la méthode lorsque l'utilisateur tape sur le texte
+              child: Text(
+                "Vous avez déjà un compte? connectez-vous",
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorDark,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                ),
               ),
             ),
           ],

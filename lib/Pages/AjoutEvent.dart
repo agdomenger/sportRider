@@ -50,6 +50,32 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
+  ElevatedButton boutonAdd() {
+    return ElevatedButton(
+      onPressed: () {
+        _showAddEventPopup();
+      },
+      style: ElevatedButton.styleFrom(
+        primary: Theme.of(context).primaryColor, // Background color
+        onPrimary: Colors.white, // Text color
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10), // Rounded corners
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.add), // Add icon
+            SizedBox(width: 5), // Spacer
+            Text('Add'), // Button text
+          ],
+        ),
+      ),
+    );
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -70,6 +96,7 @@ class _EventFormState extends State<EventForm> {
     print('voici l id du doc: $id_doc ');
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColorLight,
           leading: IconButton(
@@ -333,8 +360,28 @@ class _EventFormState extends State<EventForm> {
                   onPressed: () {
                     _showAddEventPopup();
                   },
-                  style: unselectedButtonStyle(),
-                  child: Text('Valider l\'événement'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(240, 240, 250, 252),
+                    foregroundColor: Color.fromARGB(240, 8, 103, 136),
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Color.fromARGB(240, 8, 103, 136),
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                      // Rounded corners
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.add), // Add icon
+                        SizedBox(width: 5), // Spacer
+                        Text('ajouter'), // Button text
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],

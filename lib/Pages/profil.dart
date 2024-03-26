@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:sport_rider/Pages/AjoutEvent.dart';
 import 'package:sport_rider/Pages/Bottom.dart';
 import 'package:sport_rider/Pages/Calendar.dart';
+import 'package:sport_rider/Pages/Login.dart';
 import 'package:sport_rider/Pages/questionnaireProfil.dart';
 import 'package:sport_rider/Widgets/Horse.dart';
+import 'package:sport_rider/Widgets/deco.dart';
 import 'package:sport_rider/Widgets/event.dart';
 import 'package:sport_rider/Widgets/eventList.dart';
 
@@ -29,12 +31,37 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  void _logout() async {
+    try {
+      // Faites une requête GET vers la route de déconnexion
+      var response = await http.get(Uri.parse('http://localhost:8080/logout'));
+
+      // Vérifiez si la requête a réussi (code de statut 200)
+      if (response.statusCode == 200) {
+        // Déconnexion réussie, affichez un message ou effectuez toute autre action nécessaire
+        print('Déconnexion réussie');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      } else {
+        // La requête a échoué, affichez un message d'erreur ou effectuez une action en conséquence
+        print(
+            'Échec de la déconnexion. Code de statut: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Une erreur s'est produite lors de l'envoi de la requête, affichez l'erreur
+      print('Erreur lors de la déconnexion: $e');
+    }
+  }
+
   // Email de l'utilisateur (à remplacer par les données réelles)
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
+      appBar: CustomAppBar(onLogout: _logout),
       body: FutureBuilder<Map<String, dynamic>>(
           future: _userData,
           builder: (context, snapshot) {
@@ -66,9 +93,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 80,
-                    ),
                     // En-tête avec l'image ronde
                     Container(
                       height: 80,
