@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sport_rider/Pages/profil.dart';
 
 import '../themes.dart';
 
-void main() {
-  runApp(QuestionnaireApp());
-}
-
 class QuestionnaireApp extends StatelessWidget {
+  late String id_doc;
+
+  QuestionnaireApp({required this.id_doc});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +23,7 @@ class QuestionnaireApp extends StatelessWidget {
           ),
         ),
         body: SingleChildScrollView(
-          child: QuestionnaireScreen(),
+          child: QuestionnaireScreen(id_doc: this.id_doc),
         ),
       ),
     );
@@ -31,6 +31,9 @@ class QuestionnaireApp extends StatelessWidget {
 }
 
 class QuestionnaireScreen extends StatefulWidget {
+  late String id_doc;
+
+  QuestionnaireScreen({required this.id_doc});
   @override
   _QuestionnaireScreenState createState() => _QuestionnaireScreenState();
 }
@@ -488,7 +491,14 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              Navigator.pushReplacement(
+                                // Revenir à la page SportPage
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProfilePage(id_doc: widget.id_doc),
+                                ),
+                              );
                             },
                             child: Text(
                               'Fermer',

@@ -329,35 +329,37 @@ double calculatePercentage(Map<String, dynamic> userData) {
     List<dynamic> entrainements = userData['entrainements'];
 
     // Initialiser le nombre total d'exercices et le nombre d'exercices vrais
-    int totalExercises = 0;
+    int totalExercises = 1;
     int trueExercises = 0;
+    if (entrainements.length >= 1) {
+      for (var entrainement in entrainements) {
+        // Récupérer la liste des exercices de l'entraînement
+        List<dynamic> exerciceIds = entrainement['exerciceIds'] ?? [];
 
-    // Parcourir chaque entraînement
-    for (var entrainement in entrainements) {
-      // Récupérer la liste des exercices de l'entraînement
-      List<dynamic> exerciceIds = entrainement['exerciceIds'] ?? [];
+        // Mettre à jour le nombre total d'exercices
+        totalExercises += exerciceIds.length;
 
-      // Mettre à jour le nombre total d'exercices
-      totalExercises += exerciceIds.length;
+        // Parcourir chaque exercice ID
+        for (var exerciseId in exerciceIds) {
+          // Récupérer les données de l'exercice par son ID
 
-      // Parcourir chaque exercice ID
-      for (var exerciseId in exerciceIds) {
-        // Récupérer les données de l'exercice par son ID
-
-        // Extraire le statut de l'exercice de la réponse
-        var exerciseStatus = exerciseId['status'];
-        // Vérifier si le statut de l'exercice est true
-        if (exerciseStatus == true) {
-          trueExercises++;
+          // Extraire le statut de l'exercice de la réponse
+          var exerciseStatus = exerciseId['status'];
+          // Vérifier si le statut de l'exercice est true
+          if (exerciseStatus == true) {
+            trueExercises++;
+          }
         }
       }
     }
+    // Parcourir chaque entraînement
 
     // Calculer le pourcentage d'exercices avec le statut true
     double percentage = (trueExercises / totalExercises) * 100;
 
     return percentage;
   } else {
+    return 0;
     throw Exception('Entrainements data not found in user data');
   }
 }
