@@ -331,6 +331,8 @@ double calculatePercentage(Map<String, dynamic> userData) {
     // Initialiser le nombre total d'exercices et le nombre d'exercices vrais
     int totalExercises = 1;
     int trueExercises = 0;
+
+    // Parcourir chaque entraînement
     if (entrainements.length >= 1) {
       for (var entrainement in entrainements) {
         // Récupérer la liste des exercices de l'entraînement
@@ -352,16 +354,16 @@ double calculatePercentage(Map<String, dynamic> userData) {
         }
       }
     }
-    // Parcourir chaque entraînement
 
-    // Calculer le pourcentage d'exercices avec le statut true
+    // Calculer le pourcentage
     double percentage = (trueExercises / totalExercises) * 100;
 
-    return percentage;
-  } else {
-    return 0;
-    throw Exception('Entrainements data not found in user data');
+    // Arrondir le résultat à l'unité
+    return percentage.roundToDouble();
   }
+
+  // Si les données utilisateur ne contiennent pas la liste des entraînements, retourner 0
+  return 0.0;
 }
 
 bool checkAllExercisesStatus(Map<String, dynamic> userData, int trainingIndex) {

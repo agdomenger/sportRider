@@ -508,12 +508,13 @@ double calculatePercentage(Map<String, dynamic> userData) {
       }
     }
 
-    // Calculer le pourcentage d'exercices avec le statut true
+    // Calculer le pourcentage
     double percentage = (trueExercises / totalExercises) * 100;
 
-    return percentage;
-  } else {
-    return 0;
-    throw Exception('Entrainements data not found in user data');
+    // Arrondir le résultat à l'unité
+    return percentage.roundToDouble();
   }
+
+  // Si les données utilisateur ne contiennent pas la liste des entraînements, retourner 0
+  return 0.0;
 }
