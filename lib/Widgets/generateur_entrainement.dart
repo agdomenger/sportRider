@@ -20,8 +20,8 @@ class _CreerEntrainementState extends State<CreerEntrainement> {
   Future<void> _fetchExercisesAndCreateTraining() async {
     try {
       // Récupérer la liste des IDs d'exercices depuis l'URL spécifiée
-      final response =
-          await http.get(Uri.parse('http://localhost:8080/exercices'));
+      final response = await http.get(Uri.parse(
+          'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/exercices'));
       if (response.statusCode == 200) {
         final List<dynamic> exerciseIds = json.decode(response.body);
 
@@ -43,7 +43,8 @@ class _CreerEntrainementState extends State<CreerEntrainement> {
         );
         // Créer l'entraînement avec les IDs d'exercices sélectionnés
         final trainingResponse = await http.post(
-          Uri.parse('http://localhost:8080/entrainements'),
+          Uri.parse(
+              'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/entrainements'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({
             "compteId": widget.idDoc,

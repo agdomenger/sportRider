@@ -22,8 +22,8 @@ class _ProfilePageState extends State<ProfilePage> {
   late Future<Map<String, dynamic>> _userData = _fetchUserData();
 
   Future<Map<String, dynamic>> _fetchUserData() async {
-    final response = await http
-        .get(Uri.parse('http://localhost:8080/comptes/${widget.id_doc}'));
+    final response = await http.get(Uri.parse(
+        'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/comptes/${widget.id_doc}'));
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
@@ -34,7 +34,8 @@ class _ProfilePageState extends State<ProfilePage> {
   void _logout() async {
     try {
       // Faites une requête GET vers la route de déconnexion
-      var response = await http.get(Uri.parse('http://localhost:8080/logout'));
+      var response = await http.get(Uri.parse(
+          'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/logout'));
 
       // Vérifiez si la requête a réussi (code de statut 200)
       if (response.statusCode == 200) {
@@ -62,383 +63,389 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: CustomAppBar(onLogout: _logout),
-      body: FutureBuilder<Map<String, dynamic>>(
-          future: _userData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            } else {
-              final userData = snapshot.data!;
-              List<dynamic> equides = userData['equides'] ?? [];
-              final email = userData['email'] as String;
-              final userName = userData['nom'] as String ?? "";
-              final userSurname = userData['prenom'] as String ?? "";
-              String horseName = "Ajouter un équidé";
-              String horseElevage = "";
-              String horseYear = "non communiqué";
-              double pourcentage = calculatePercentage(userData);
-              if (equides.isNotEmpty) {
-                horseName = equides[0]['nom'].toString();
-                horseElevage = equides[0]['elevage'].toString();
-                horseYear = equides[0]['anneeNaissance'].toString();
-              }
-              return Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // En-tête avec l'image ronde
-                    Container(
-                      height: 80,
-                      child: Row(
-                        children: [
-                          // Moitié haute à gauche de l'image
-                          Container(
-                            width: MediaQuery.of(context).size.width / 2 -
-                                44, // 44 est la largeur totale des deux bordures
-                            height: 200,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 40,
-                                  color: Colors.transparent,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                          width: 3.0,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 37,
-                                  color: Colors.transparent,
-                                ),
-                              ],
-                            ),
-                          ),
-                          // Image ronde
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundColor: Theme.of(context).primaryColorDark,
-                            backgroundImage: AssetImage(
-                              '/Users/domenger/Desktop/P2i/sport_rider/assets/user_image.jpg',
-                            ),
-                          ),
-                          // Moitié haute à droite de l'image
-                          Container(
-                            width: MediaQuery.of(context).size.width / 2 -
-                                44, // 44 est la largeur totale des deux bordures
-                            height: 200,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 40,
-                                  color: Colors.transparent,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                          width: 3.0,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 37,
-                                  color: Colors.transparent,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    // Informations utilisateur
-                    Text(
-                      'Bienvenue $userName  $userSurname',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColorDark),
-                    ),
-                    Text(
-                      email,
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                          fontStyle: FontStyle.italic,
-                          color: Theme.of(context).primaryColorDark),
-                    ),
-                    SizedBox(height: 30),
-                    // Cadres organisés en lignes et colonnes
-                    Row(
-                      children: [
-                        // Première colonne
-                        Expanded(
-                          child: Column(
-                            children: [
-                              HorseWidget(
-                                  nom: horseName,
-                                  elevage: horseElevage,
-                                  annee: horseYear),
-                              SizedBox(height: 4),
-                              InkWell(
-                                onTap: () {
-                                  // Ajoutez ici la navigation vers la page du questionnaire
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            QuestionnaireApp()),
-                                  );
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(4.0),
-                                  margin: EdgeInsets.all(4.0),
-                                  height: 86,
-                                  decoration: BoxDecoration(
+      body: SingleChildScrollView(
+        child: FutureBuilder<Map<String, dynamic>>(
+            future: _userData,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                final userData = snapshot.data!;
+                List<dynamic> equides = userData['equides'] ?? [];
+                final email = userData['email'] as String;
+                final userName = userData['nom'] as String ?? "";
+                final userSurname = userData['prenom'] as String ?? "";
+                String horseName = "Ajouter un équidé";
+                String horseElevage = "";
+                String horseYear = "non communiqué";
+                double pourcentage = calculatePercentage(userData);
+                if (equides.isNotEmpty) {
+                  horseName = equides[0]['nom'].toString();
+                  horseElevage = equides[0]['elevage'].toString();
+                  horseYear = equides[0]['anneeNaissance'].toString();
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // En-tête avec l'image ronde
+                      Container(
+                        height: 80,
+                        child: Row(
+                          children: [
+                            // Moitié haute à gauche de l'image
+                            Container(
+                              width: MediaQuery.of(context).size.width / 2 -
+                                  44, // 44 est la largeur totale des deux bordures
+                              height: 200,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 40,
                                     color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    border: Border.all(
-                                      color: Theme.of(context)
-                                          .canvasColor, // Couleur de la bordure
-                                      width: 3.0, // Épaisseur de la bordure
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            width: 3.0,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      // Colonne pour le titre
-                                      Expanded(
-                                        flex: 6, // 60% de la largeur
-                                        child: Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Mon profil',
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .canvasColor,
-                                                  fontSize: 14.0,
-                                                  fontWeight: FontWeight.bold,
+                                  Container(
+                                    height: 37,
+                                    color: Colors.transparent,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Image ronde
+                            CircleAvatar(
+                              radius: 40,
+                              backgroundColor:
+                                  Theme.of(context).primaryColorDark,
+                              backgroundImage: AssetImage(
+                                'assets/user_image.jpg',
+                              ),
+                            ),
+                            // Moitié haute à droite de l'image
+                            Container(
+                              width: MediaQuery.of(context).size.width / 2 -
+                                  44, // 44 est la largeur totale des deux bordures
+                              height: 200,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    color: Colors.transparent,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            width: 3.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 37,
+                                    color: Colors.transparent,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      // Informations utilisateur
+                      Text(
+                        'Bienvenue $userName  $userSurname',
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColorDark),
+                      ),
+                      Text(
+                        email,
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            fontStyle: FontStyle.italic,
+                            color: Theme.of(context).primaryColorDark),
+                      ),
+                      SizedBox(height: 30),
+                      // Cadres organisés en lignes et colonnes
+                      Row(
+                        children: [
+                          // Première colonne
+                          Expanded(
+                            child: Column(
+                              children: [
+                                HorseWidget(
+                                    nom: horseName,
+                                    elevage: horseElevage,
+                                    annee: horseYear),
+                                SizedBox(height: 4),
+                                InkWell(
+                                  onTap: () {
+                                    // Ajoutez ici la navigation vers la page du questionnaire
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              QuestionnaireApp()),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(4.0),
+                                    margin: EdgeInsets.all(4.0),
+                                    height: 86,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .canvasColor, // Couleur de la bordure
+                                        width: 3.0, // Épaisseur de la bordure
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        // Colonne pour le titre
+                                        Expanded(
+                                          flex: 6, // 60% de la largeur
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Mon profil',
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .canvasColor,
+                                                    fontSize: 14.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
+                                                Text(
+                                                  'À complèter',
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .canvasColor,
+                                                    fontSize: 12.0,
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        // Colonne pour l'icône
+                                        Align(
+                                          alignment: Alignment.topRight,
+                                          child: Container(
+                                            width: 70,
+                                            height: 70,
+                                            child: Text(
+                                              "⚠️",
+                                              style: TextStyle(
+                                                  fontSize: 60,
+                                                  color: Color.fromARGB(
+                                                      255, 255, 149, 2)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Deuxième colonne
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.all(4.0),
+                              margin: EdgeInsets.all(4.0),
+                              height: 180,
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(
+                                  color: Theme.of(context)
+                                      .primaryColorDark, // Couleur de la bordure
+                                  width: 3.0, // Épaisseur de la bordure
+                                ),
+                              ),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      ' Preparation sportive',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 100, // Adjust the width as needed
+                                    height: 100, // Adjust the height as needed
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width:
+                                              100, // Adjust the size of the gray part
+                                          height:
+                                              100, // Adjust the size of the gray part
+                                          child: CircularProgressIndicator(
+                                            value:
+                                                1.0, // Max value to create the gray part
+                                            strokeWidth: 20,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              Theme.of(context)
+                                                  .primaryColorLight,
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned.fill(
+                                          child: CircularProgressIndicator(
+                                            value: pourcentage /
+                                                100, // 20% completion
+                                            strokeWidth: 20,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              Theme.of(context)
+                                                  .primaryColorDark,
+                                            ),
+                                          ),
+                                        ),
+                                        Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.fitness_center,
+                                                size: 45,
+                                                color: Theme.of(context)
+                                                    .primaryColorDark,
                                               ),
                                               Text(
-                                                'À complèter',
+                                                '$pourcentage %', // User's progress percentage
                                                 style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
                                                   color: Theme.of(context)
-                                                      .canvasColor,
-                                                  fontSize: 12.0,
-                                                  fontStyle: FontStyle.italic,
+                                                      .primaryColorDark,
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                      ),
-                                      // Colonne pour l'icône
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: Container(
-                                          width: 70,
-                                          height: 70,
-                                          child: Text(
-                                            "⚠️",
-                                            style: TextStyle(
-                                                fontSize: 60,
-                                                color: Color.fromARGB(
-                                                    255, 255, 149, 2)),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          'Les évènements à venir : ',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColorDark,
                           ),
                         ),
-                        // Deuxième colonne
-                        Expanded(
+                      ),
+                      EventListWidget(
+                          userData: userData, numberOfEventsToShow: 3),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6.0, right: 16.0),
+                        child: Align(
+                          alignment: Alignment.bottomRight,
                           child: Container(
-                            padding: EdgeInsets.all(4.0),
-                            margin: EdgeInsets.all(4.0),
-                            height: 180,
+                            height: 38,
                             decoration: BoxDecoration(
-                              color: Colors.transparent,
+                              color: Colors.transparent, // Fond neutre
                               borderRadius: BorderRadius.circular(8.0),
                               border: Border.all(
                                 color: Theme.of(context)
-                                    .primaryColorDark, // Couleur de la bordure
-                                width: 3.0, // Épaisseur de la bordure
+                                    .primaryColorDark, // Bord bleu foncé
+                                width: 2.0,
                               ),
                             ),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    ' Preparation sportive',
-                                    textAlign: TextAlign.left,
+                            child: TextButton(
+                              onPressed: () {
+                                // Naviguer vers la page d'ajout d'événement
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        EventForm(id_document: widget.id_doc),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  SizedBox(width: 6.0),
+                                  Text(
+                                    'Ajouter un événement',
                                     style: TextStyle(
-                                      color: Theme.of(context).primaryColorDark,
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                        color:
+                                            Theme.of(context).primaryColorDark),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 100, // Adjust the width as needed
-                                  height: 100, // Adjust the height as needed
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      SizedBox(
-                                        width:
-                                            100, // Adjust the size of the gray part
-                                        height:
-                                            100, // Adjust the size of the gray part
-                                        child: CircularProgressIndicator(
-                                          value:
-                                              1.0, // Max value to create the gray part
-                                          strokeWidth: 20,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                            Theme.of(context).primaryColorLight,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned.fill(
-                                        child: CircularProgressIndicator(
-                                          value: pourcentage /
-                                              100, // 20% completion
-                                          strokeWidth: 20,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                            Theme.of(context).primaryColorDark,
-                                          ),
-                                        ),
-                                      ),
-                                      Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.fitness_center,
-                                              size: 45,
-                                              color: Theme.of(context)
-                                                  .primaryColorDark,
-                                            ),
-                                            Text(
-                                              '$pourcentage %', // User's progress percentage
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                color: Theme.of(context)
-                                                    .primaryColorDark,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(
-                        'Les évènements à venir : ',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColorDark,
-                        ),
-                      ),
-                    ),
-                    EventListWidget(
-                        userData: userData, numberOfEventsToShow: 3),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6.0, right: 16.0),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: Container(
-                          height: 38,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent, // Fond neutre
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: Theme.of(context)
-                                  .primaryColorDark, // Bord bleu foncé
-                              width: 2.0,
-                            ),
-                          ),
-                          child: TextButton(
-                            onPressed: () {
-                              // Naviguer vers la page d'ajout d'événement
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      EventForm(id_document: widget.id_doc),
-                                ),
-                              );
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  color: Theme.of(context).primaryColorDark,
-                                ),
-                                SizedBox(width: 6.0),
-                                Text(
-                                  'Ajouter un événement',
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).primaryColorDark),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            }
-          }),
+                    ],
+                  ),
+                );
+              }
+            }),
+      ),
       bottomNavigationBar: MyBottomNavigationBar(id_doc: widget.id_doc),
     );
   }

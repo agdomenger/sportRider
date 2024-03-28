@@ -66,7 +66,8 @@ class SignupPage extends StatelessWidget {
 
                 // Envoyer les données du compte à votre API d'inscription
                 final response = await http.post(
-                  Uri.parse('http://localhost:8080/comptes'),
+                  Uri.parse(
+                      'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/comptes'),
                   headers: <String, String>{
                     'Content-Type': 'application/json; charset=UTF-8',
                   },

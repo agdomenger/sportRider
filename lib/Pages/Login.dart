@@ -37,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).primaryColor,
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -86,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                 // Utilisez la bibliothèque http pour envoyer une requête à votre API d'authentification
                 final response = await http.get(
                   Uri.parse(
-                      'http://localhost:8080/connect?email=${emailController.text}&password=${passwordController.text}'),
+                      'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/connect?email=${emailController.text}&password=${passwordController.text}'),
                   headers: <String, String>{
                     'Content-Type': 'application/json',
                   },

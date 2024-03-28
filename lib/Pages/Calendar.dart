@@ -20,8 +20,8 @@ class _MyCalendarState extends State<MyCalendar> {
   late Future<Map<String, dynamic>> _userData = _fetchUserData();
 
   Future<Map<String, dynamic>> _fetchUserData() async {
-    final response = await http
-        .get(Uri.parse('http://localhost:8080/comptes/${widget.id_doc}'));
+    final response = await http.get(Uri.parse(
+        'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/comptes/${widget.id_doc}'));
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {

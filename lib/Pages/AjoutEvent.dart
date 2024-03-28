@@ -442,7 +442,8 @@ class _EventFormState extends State<EventForm> {
 
 Future<void> addEventToDatabase(
     String compteId, Map<String, dynamic> evenement) async {
-  final url = Uri.parse('http://localhost:8080/evenements');
+  final url = Uri.parse(
+      'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/evenements');
   final headers = {
     'Content-Type': 'application/json',
   };

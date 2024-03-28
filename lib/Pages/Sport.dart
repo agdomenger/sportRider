@@ -16,8 +16,8 @@ class _SportPageState extends State<SportPage> {
   late Future<Map<String, dynamic>> _userData = _fetchUserData();
 
   Future<Map<String, dynamic>> _fetchUserData() async {
-    final response = await http
-        .get(Uri.parse('http://localhost:8080/comptes/${widget.id_doc}'));
+    final response = await http.get(Uri.parse(
+        'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/comptes/${widget.id_doc}'));
     if (response.statusCode == 200) {
       final userData = json.decode(response.body);
       return userData;
@@ -58,6 +58,9 @@ class _SportPageState extends State<SportPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(
+                      height: 30,
+                    ),
                     SizedBox(
                       width: 250, // Adjust the width as needed
                       height: 250, // Adjust the height as needed
@@ -155,8 +158,10 @@ class TrainingRectangle extends StatelessWidget {
         _showTrainingMenu(context, exercises, ind);
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
-        padding: EdgeInsets.all(10),
+        width: 370,
+        height: 60,
+        margin: EdgeInsets.symmetric(vertical: 4),
+        padding: EdgeInsets.all(6),
         decoration: BoxDecoration(
           border:
               Border.all(color: Theme.of(context).primaryColorDark, width: 2),
@@ -241,7 +246,6 @@ class TrainingRectangle extends StatelessWidget {
             void nextExercise() async {
               // Mettre à jour le statut de l'exercice dans la base de données
               if (currentExerciseIndex < exercises.length) {
-                print(exercises[currentExerciseIndex]);
                 final exerciseId = exercises[currentExerciseIndex]['id'];
                 await updateExerciseStatus(exerciseId, id_doc, index);
               }
@@ -296,7 +300,8 @@ Future<void> updateExerciseStatus(
     print(exerciseId);
     print(idCmpt);
     final response = await http.put(
-      Uri.parse('http://localhost:8080/exercices/$exerciseId'),
+      Uri.parse(
+          'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/exercices/$exerciseId'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'idCompte': idCmpt,
