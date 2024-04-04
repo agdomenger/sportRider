@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:sport_rider/Pages/Login.dart'; // Importez la page de connexion pour la redirection
+import 'package:sport_rider/Pages/Login.dart';
 
 class SignupPage extends StatelessWidget {
   SignupPage();
@@ -64,7 +64,7 @@ class SignupPage extends StatelessWidget {
                   'passwordHash': passwordController.text,
                 };
 
-                // Envoyer les données du compte à votre API d'inscription
+                // Envoyer les données du compte à l'api API d'inscription
                 final response = await http.post(
                   Uri.parse(
                       'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/comptes'),
@@ -98,6 +98,7 @@ class SignupPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap:
+                  //renvoyer vers la page de connexion
                   navigateToLoginUpPage, // Appeler la méthode lorsque l'utilisateur tape sur le texte
               child: Text(
                 "Vous avez déjà un compte? connectez-vous",

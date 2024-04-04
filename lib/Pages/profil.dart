@@ -3,12 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:sport_rider/Pages/AjoutEvent.dart';
 import 'package:sport_rider/Pages/Bottom.dart';
-import 'package:sport_rider/Pages/Calendar.dart';
 import 'package:sport_rider/Pages/Login.dart';
 import 'package:sport_rider/Pages/questionnaireProfil.dart';
 import 'package:sport_rider/Widgets/Horse.dart';
 import 'package:sport_rider/Widgets/deco.dart';
-import 'package:sport_rider/Widgets/event.dart';
 import 'package:sport_rider/Widgets/eventList.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -20,7 +18,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late Future<Map<String, dynamic>> _userData = _fetchUserData();
-
+//récuperer les informations de l'utilisateur
   Future<Map<String, dynamic>> _fetchUserData() async {
     final response = await http.get(Uri.parse(
         'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/comptes/${widget.id_doc}'));
@@ -33,30 +31,28 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _logout() async {
     try {
-      // Faites une requête GET vers la route de déconnexion
+      // requête GET vers la route de déconnexion
       var response = await http.get(Uri.parse(
           'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/logout'));
 
-      // Vérifiez si la requête a réussi (code de statut 200)
+      // Vérifiez si la requête a réussi
       if (response.statusCode == 200) {
-        // Déconnexion réussie, affichez un message ou effectuez toute autre action nécessaire
+        // Déconnexion réussie
         print('Déconnexion réussie');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()),
         );
       } else {
-        // La requête a échoué, affichez un message d'erreur ou effectuez une action en conséquence
+        // La requête a échoué
         print(
             'Échec de la déconnexion. Code de statut: ${response.statusCode}');
       }
     } catch (e) {
-      // Une erreur s'est produite lors de l'envoi de la requête, affichez l'erreur
+      // Une erreur s'est produite lors de l'envoi de la requête
       print('Erreur lors de la déconnexion: $e');
     }
   }
-
-  // Email de l'utilisateur (à remplacer par les données réelles)
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +72,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Text('Error: ${snapshot.error}'),
                 );
               } else {
+                //modulé l'affichage en fonction de si on a les infos ou pas
+                // permet pour les comptes qui viennent d'être créés d'être guidé,
+                // et pour les comptes actifs d'avoir accès à leurs infos
                 final userData = snapshot.data!;
                 List<dynamic> equides = userData['equides'] ?? [];
                 final email = userData['email'] as String;
@@ -95,15 +94,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // En-tête avec l'image ronde
+                      // En-tête avec l'image ronde au centre
                       Container(
                         height: 80,
                         child: Row(
                           children: [
-                            // Moitié haute à gauche de l'image
                             Container(
-                              width: MediaQuery.of(context).size.width / 2 -
-                                  44, // 44 est la largeur totale des deux bordures
+                              width: MediaQuery.of(context).size.width / 2 - 44,
                               height: 200,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -132,7 +129,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               ),
                             ),
-                            // Image ronde
                             CircleAvatar(
                               radius: 40,
                               backgroundColor:
@@ -141,10 +137,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'assets/user_image.jpg',
                               ),
                             ),
-                            // Moitié haute à droite de l'image
                             Container(
-                              width: MediaQuery.of(context).size.width / 2 -
-                                  44, // 44 est la largeur totale des deux bordures
+                              width: MediaQuery.of(context).size.width / 2 - 44,
                               height: 200,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -209,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SizedBox(height: 4),
                                 InkWell(
                                   onTap: () {
-                                    // Ajoutez ici la navigation vers la page du questionnaire
+                                    //redirection vers la page qcm
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -227,16 +221,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.circular(8.0),
                                       border: Border.all(
-                                        color: Theme.of(context)
-                                            .canvasColor, // Couleur de la bordure
-                                        width: 3.0, // Épaisseur de la bordure
+                                        color: Theme.of(context).canvasColor,
+                                        width: 3.0,
                                       ),
                                     ),
                                     child: Row(
                                       children: [
-                                        // Colonne pour le titre
                                         Expanded(
-                                          flex: 6, // 60% de la largeur
+                                          flex: 6,
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Column(
@@ -265,7 +257,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                             ),
                                           ),
                                         ),
-                                        // Colonne pour l'icône
                                         Align(
                                           alignment: Alignment.topRight,
                                           child: Container(
@@ -297,9 +288,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(8.0),
                                 border: Border.all(
-                                  color: Theme.of(context)
-                                      .primaryColorDark, // Couleur de la bordure
-                                  width: 3.0, // Épaisseur de la bordure
+                                  color: Theme.of(context).primaryColorDark,
+                                  width: 3.0,
                                 ),
                               ),
                               child: Stack(
@@ -319,19 +309,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: 100, // Adjust the width as needed
-                                    height: 100, // Adjust the height as needed
+                                    width: 100,
+                                    height: 100,
                                     child: Stack(
                                       alignment: Alignment.center,
                                       children: [
                                         SizedBox(
-                                          width:
-                                              100, // Adjust the size of the gray part
-                                          height:
-                                              100, // Adjust the size of the gray part
+                                          width: 100,
+                                          height: 100,
                                           child: CircularProgressIndicator(
-                                            value:
-                                                1.0, // Max value to create the gray part
+                                            value: 1.0,
                                             strokeWidth: 20,
                                             valueColor:
                                                 AlwaysStoppedAnimation<Color>(
@@ -342,8 +329,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ),
                                         Positioned.fill(
                                           child: CircularProgressIndicator(
-                                            value: pourcentage /
-                                                100, // 20% completion
+                                            value: pourcentage / 100,
                                             strokeWidth: 20,
                                             valueColor:
                                                 AlwaysStoppedAnimation<Color>(
@@ -364,7 +350,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     .primaryColorDark,
                                               ),
                                               Text(
-                                                '$pourcentage %', // User's progress percentage
+                                                '$pourcentage %', //prencentage d'avancement dans les entrainements
                                                 style: TextStyle(
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold,
@@ -404,11 +390,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Container(
                             height: 38,
                             decoration: BoxDecoration(
-                              color: Colors.transparent, // Fond neutre
+                              color: Colors.transparent,
                               borderRadius: BorderRadius.circular(8.0),
                               border: Border.all(
-                                color: Theme.of(context)
-                                    .primaryColorDark, // Bord bleu foncé
+                                color: Theme.of(context).primaryColorDark,
                                 width: 2.0,
                               ),
                             ),
@@ -454,27 +439,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class Event {
-  final DateTime date;
-
-  Event(this.date);
-}
-
-List<Event> _events = [
-  Event(DateTime(2024, 3, 1)),
-  Event(DateTime(2024, 3, 16)),
-  Event(DateTime(2024, 3, 17)), // Un événement pour aujourd'hui
-  Event(DateTime(2024, 3, 17)), // Un événement pour demain
-  Event(DateTime(2024, 3, 18)), // Un événement pour le lendemain
-  // Ajoutez d'autres événements au besoin
-];
-
 bool isSameDay(DateTime date1, DateTime date2) {
   return date1.year == date2.year &&
       date1.month == date2.month &&
       date1.day == date2.day;
 }
 
+//fonction epermettant de connaire l'avancement de l'utilisateur dans les exercices proposés
 double calculatePercentage(Map<String, dynamic> userData) {
   // Vérifier si les données utilisateur contiennent la liste des entraînements
   if (userData.containsKey('entrainements')) {
@@ -496,11 +467,7 @@ double calculatePercentage(Map<String, dynamic> userData) {
 
         // Parcourir chaque exercice ID
         for (var exerciseId in exerciceIds) {
-          // Récupérer les données de l'exercice par son ID
-
-          // Extraire le statut de l'exercice de la réponse
           var exerciseStatus = exerciseId['status'];
-          // Vérifier si le statut de l'exercice est true
           if (exerciseStatus == true) {
             trueExercises++;
           }
@@ -514,7 +481,5 @@ double calculatePercentage(Map<String, dynamic> userData) {
     // Arrondir le résultat à l'unité
     return percentage.roundToDouble();
   }
-
-  // Si les données utilisateur ne contiennent pas la liste des entraînements, retourner 0
   return 0.0;
 }

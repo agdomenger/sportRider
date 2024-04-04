@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // Importer la bibliothèque HTTP
 import 'dart:convert';
-
 import 'package:sport_rider/Pages/profil.dart';
 import 'package:sport_rider/Pages/signup.dart';
 
@@ -11,7 +10,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String authMessage = ''; // Message d'authentification à afficher
+  String authMessage = '';
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -84,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () async {
-                // Utilisez la bibliothèque http pour envoyer une requête à votre API d'authentification
+                // Utilisez la bibliothèque http pour envoyer une requête à l'API sur la route connect pour vérifier que le compte existe
                 final response = await http.get(
                   Uri.parse(
                       'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/connect?email=${emailController.text}&password=${passwordController.text}'),
@@ -99,11 +98,10 @@ class _LoginPageState extends State<LoginPage> {
                   print(jsonDecode(response.body)['documentReference']);
 
                   var id = jsonDecode(response.body)['documentReference'];
-                  // Mettre à jour la variable id du state
+                  // Mettre à jour la variable id correspondant à l'id du document firebase faisant reference au compte
                   setState(() {
                     id = id;
                   });
-                  // je veux initialiser le string dans login page en mode widget.id = jsonDecode(response.body)['documentReference']
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {

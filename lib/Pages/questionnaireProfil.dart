@@ -51,8 +51,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context)
-          .primaryColor, // Choisissez la couleur de fond souhaitée
+      color: Theme.of(context).primaryColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -461,9 +460,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Ajoutez ici le code pour traiter l'envoi du questionnaire
-                  // Vous pouvez par exemple afficher un message de confirmation
-                  // ou envoyer les réponses à un serveur.
+                  //todo plus tard
                   showDialog(
                     context: context,
                     builder: (context) {

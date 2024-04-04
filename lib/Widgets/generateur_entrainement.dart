@@ -5,6 +5,10 @@ import 'dart:math';
 
 import 'package:sport_rider/Pages/Sport.dart';
 
+/*
+le widget fait appel à l'api afin de créer un entrainement sur mesure de 5 exercices correspondant
+au profil de l'utilisateur.
+ */
 class CreerEntrainement extends StatefulWidget {
   final String idDoc;
 
@@ -19,12 +23,11 @@ class _CreerEntrainementState extends State<CreerEntrainement> {
 
   Future<void> _fetchExercisesAndCreateTraining() async {
     try {
-      // Récupérer la liste des IDs d'exercices depuis l'URL spécifiée
+      // Récupérer la liste des IDs d'exercices depuis l'API
       final response = await http.get(Uri.parse(
           'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/exercices'));
       if (response.statusCode == 200) {
         final List<dynamic> exerciseIds = json.decode(response.body);
-
         // Tirer au sort 5 IDs d'exercices aléatoires
         List<String> selectedExercises = [];
         final random = Random();
@@ -54,8 +57,7 @@ class _CreerEntrainementState extends State<CreerEntrainement> {
 
         if (trainingResponse.statusCode == 201) {
           // L'entraînement a été créé avec succès
-          print(
-              'Entraînement créé avec succès !'); // Retourner à la page précédente
+          print('Entraînement créé avec succès !');
           Navigator.pushReplacement(
             // Revenir à la page SportPage
             context,

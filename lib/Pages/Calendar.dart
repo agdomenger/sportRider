@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sport_rider/Widgets/event.dart';
 import 'package:sport_rider/Widgets/eventList.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class MyCalendar extends StatefulWidget {
-  final String id_doc; // L'ID du document Firebase
+  final String id_doc; // L'ID du document Firebase correspondant au compte
   MyCalendar({required this.id_doc});
   @override
   _MyCalendarState createState() => _MyCalendarState();
@@ -16,9 +15,8 @@ class _MyCalendarState extends State<MyCalendar> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-
-  late Future<Map<String, dynamic>> _userData = _fetchUserData();
-
+  late Future<Map<String, dynamic>> _userData =
+      _fetchUserData(); // récupération des informations du compte
   Future<Map<String, dynamic>> _fetchUserData() async {
     final response = await http.get(Uri.parse(
         'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/comptes/${widget.id_doc}'));
@@ -33,6 +31,7 @@ class _MyCalendarState extends State<MyCalendar> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
+      //navbar
       appBar: AppBar(
         title: Text('Calendrier d\'événements'),
         backgroundColor: Theme.of(context).primaryColorLight,
@@ -48,7 +47,8 @@ class _MyCalendarState extends State<MyCalendar> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: CircularProgressIndicator(),
+              child:
+                  CircularProgressIndicator(), // chargement de la page en attendant les données
             );
           } else if (snapshot.hasError) {
             return Center(
@@ -102,10 +102,10 @@ class _MyCalendarState extends State<MyCalendar> {
                                           EdgeInsets.symmetric(horizontal: 2),
                                       child: Text(
                                         getEventEmoji(
-                                            tag), // Emoji que vous souhaitez utiliser
+                                            tag), //emoji correspondant au type d'évènement
                                         style: TextStyle(
                                           fontSize: 16,
-                                        ), // Taille de l'emoji
+                                        ),
                                       ),
                                     );
                                   }
@@ -131,7 +131,7 @@ class _MyCalendarState extends State<MyCalendar> {
                       ),
                     ),
                   ),
-                  // Liste des événements
+                  // Liste des événements -- appel au widget
                   EventListWidget(userData: userData),
                 ],
               ),
@@ -143,12 +143,14 @@ class _MyCalendarState extends State<MyCalendar> {
   }
 }
 
+//récupère les evenement du jour
 bool isSameDay(DateTime date1, DateTime date2) {
   return date1.year == date2.year &&
       date1.month == date2.month &&
       date1.day == date2.day;
 }
 
+//renvoie l'emoji representant le type d'évènement
 String getEventEmoji(String tag) {
   switch (tag) {
     case 'concours':

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/*
+nav bar differente pour la page de base afin d'ajouter un bouton pour la deconnexion 
+*/
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onLogout;
 

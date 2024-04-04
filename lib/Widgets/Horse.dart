@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sport_rider/Pages/AjoutCheval.dart'; // Assurez-vous que le fichier add_horse_page.dart est correctement importé
 
+/*
+widget de présentation de l'équidé
+*/
 class HorseWidget extends StatelessWidget {
   final String nom;
   final String elevage;
@@ -54,7 +57,7 @@ class HorseWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    annee, // à remplacer par les épreuves si elles existent.
+                    annee,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Theme.of(context).shadowColor,

@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:sport_rider/Pages/AjoutEvent.dart'; // Importez vos pages ici
 import 'package:sport_rider/Pages/Calendar.dart';
 import 'package:sport_rider/Pages/Sport.dart';
-import 'package:sport_rider/Pages/questionnaireProfil.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
-  final String id_doc; // L'ID de la page
+  final String id_doc; // L'ID du compte pour une réference à firebase
 
   MyBottomNavigationBar({required this.id_doc});
 
-  // Fonction pour créer un élément BottomNavigationBarItem avec une icône spécifique
+  // Fonction pour créer un élément BottomNavigationBarItem avec une icône
   BottomNavigationBarItem _createBottomNavItem(
       IconData icon, BuildContext context) {
     return BottomNavigationBarItem(
       icon: Container(
-        margin: EdgeInsets.only(top: 18.0), // Ajoutez une marge en haut
+        margin: EdgeInsets.only(top: 18.0),
         child: Icon(
           icon,
           color: Theme.of(context).primaryColorLight,
         ),
       ),
-      label: '', // Laissez le label vide
+      label: '',
     );
   }
 
+/*
+-----------------------------------
+Création de la barre de navigation
+-----------------------------------
+*/
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -37,10 +40,9 @@ class MyBottomNavigationBar extends StatelessWidget {
         _createBottomNavItem(Icons.psychology, context),
       ],
       onTap: (int index) {
-        // Ajoutez votre logique de navigation ici en fonction de l'index
-        // Par exemple, utilisez un Navigator pour changer d'écran
         switch (index) {
           case 0:
+            //chaque icone renvoit vers la page correspondante
             Navigator.push(
               context,
               MaterialPageRoute(

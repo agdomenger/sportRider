@@ -12,6 +12,7 @@ class AddHorsePage extends StatefulWidget {
 }
 
 class _AddHorsePageState extends State<AddHorsePage> {
+  //Pour ajouter un cheval, les informations suivantes sont essentielles:
   late String id_document;
   late TextEditingController nameController;
   late TextEditingController birthYearController;
@@ -52,14 +53,14 @@ class _AddHorsePageState extends State<AddHorsePage> {
     };
 
     final Uri uri = Uri.parse(
-        'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/equides');
+        'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/equides'); // appel à la requête post de l'API pour créer un équidé
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode(requestBody);
 
     final response = await http.post(uri, headers: headers, body: body);
 
     if (response.statusCode == 200) {
-      print('Le cheval a été ajouté avec succès');
+      //si status = 200 alors la requête est réussie
       Navigator.pushReplacement(
         // Revenir à la page SportPage
         context,

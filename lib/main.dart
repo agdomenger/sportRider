@@ -27,6 +27,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/*
+fonction sur mesure pour la gestion du custom */
 class MyCustomTokenStore implements TokenStore {
   String? _token;
 

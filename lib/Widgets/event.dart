@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/*
+Widget rectangulaire pour l'apparence des evenements dans la page d'accueil et la page calendrier 
+*/
 class EventWidget extends StatelessWidget {
   final String title;
   final String description;
@@ -103,6 +106,7 @@ class EventWidget extends StatelessWidget {
   }
 }
 
+// pour avoir la date à un format plus digest
 String getMonthName(int month) {
   switch (month) {
     case 1:

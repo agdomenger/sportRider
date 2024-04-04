@@ -28,6 +28,7 @@ class _EventFormState extends State<EventForm> {
   String subEventType = '';
   String horseName = '';
 
+//création du style des boutons à part pour pouvoir les réutiliser dans la page
   ButtonStyle selectedButtonStyle() {
     return ElevatedButton.styleFrom(
       primary: Colors.blue,
@@ -50,16 +51,17 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
+//bouton d'ajout de l'évènement
   ElevatedButton boutonAdd() {
     return ElevatedButton(
       onPressed: () {
         _showAddEventPopup();
       },
       style: ElevatedButton.styleFrom(
-        primary: Theme.of(context).primaryColor, // Background color
-        onPrimary: Colors.white, // Text color
+        primary: Theme.of(context).primaryColor,
+        onPrimary: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10), // Rounded corners
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
       child: Padding(
@@ -67,15 +69,16 @@ class _EventFormState extends State<EventForm> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.add), // Add icon
-            SizedBox(width: 5), // Spacer
-            Text('Add'), // Button text
+            Icon(Icons.add),
+            SizedBox(width: 5),
+            Text('Add'),
           ],
         ),
       ),
     );
   }
 
+//visualiser la date lorsqu'elle est selectionnée
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -442,6 +445,7 @@ class _EventFormState extends State<EventForm> {
 
 Future<void> addEventToDatabase(
     String compteId, Map<String, dynamic> evenement) async {
+  //appel à l'API pour créer un évènement
   final url = Uri.parse(
       'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/evenements');
   final headers = {
@@ -451,9 +455,7 @@ Future<void> addEventToDatabase(
     'compteId': compteId,
     'evenement': evenement,
   };
-
-  print(requestBody['compteId']);
-
+  //essayer d'ajouter un évènement:
   try {
     final response = await http.post(
       url,
@@ -469,7 +471,7 @@ Future<void> addEventToDatabase(
       print('Erreur lors de l\'ajout de l\'événement: ${response.statusCode}');
     }
   } catch (e) {
-    // Gestion des erreurs lors de l'envoi de la requête
+    //si on a intercepté des erreurs lors de l'envoie de la requête
     print('Erreur lors de l\'envoi de la requête: $e');
   }
 }

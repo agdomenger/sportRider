@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:sport_rider/Widgets/generateur_entrainement.dart';
 
 class SportPage extends StatefulWidget {
-  final String id_doc; // L'ID du document Firebase
+  final String id_doc; // L'ID du document Firebase faisant reference au compte
 
   SportPage({required this.id_doc});
 
@@ -15,6 +15,7 @@ class SportPage extends StatefulWidget {
 class _SportPageState extends State<SportPage> {
   late Future<Map<String, dynamic>> _userData = _fetchUserData();
 
+// récuperer les données du compte connecté
   Future<Map<String, dynamic>> _fetchUserData() async {
     final response = await http.get(Uri.parse(
         'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/comptes/${widget.id_doc}'));
@@ -62,16 +63,16 @@ class _SportPageState extends State<SportPage> {
                       height: 30,
                     ),
                     SizedBox(
-                      width: 250, // Adjust the width as needed
-                      height: 250, // Adjust the height as needed
+                      width: 250,
+                      height: 250,
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
                           SizedBox(
-                            width: 250, // Adjust the size of the gray part
-                            height: 250, // Adjust the size of the gray part
+                            width: 250,
+                            height: 250,
                             child: CircularProgressIndicator(
-                              value: 1.0, // Max value to create the gray part
+                              value: 1.0,
                               strokeWidth: 20,
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 Theme.of(context).primaryColorLight,
@@ -80,7 +81,7 @@ class _SportPageState extends State<SportPage> {
                           ),
                           Positioned.fill(
                             child: CircularProgressIndicator(
-                              value: pourcentage / 100, // 20% completion
+                              value: pourcentage / 100,
                               strokeWidth: 20,
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 Theme.of(context).primaryColorDark,
@@ -97,7 +98,7 @@ class _SportPageState extends State<SportPage> {
                                   color: Theme.of(context).primaryColorDark,
                                 ),
                                 Text(
-                                  " $pourcentage %", // User's progress percentage
+                                  " $pourcentage %", // pourcentage des exercices fait pas l'utilisateur
                                   style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -111,7 +112,6 @@ class _SportPageState extends State<SportPage> {
                       ),
                     ),
                     SizedBox(height: 40),
-                    // Displaying the training rectangles
                     for (var i = 0; i < entrainements.length; i++)
                       TrainingRectangle(
                         title: 'Entraînement ${i + 1}',
@@ -119,9 +119,7 @@ class _SportPageState extends State<SportPage> {
                         ind: i,
                         data: userData,
                         exercises: entrainements[i]['exerciceIds'] ?? [],
-                        // Assurez-vous que exercises ne soit pas null
                       ),
-
                     SizedBox(height: 20),
                     CreerEntrainement(idDoc: widget.id_doc)
                   ],
@@ -135,6 +133,7 @@ class _SportPageState extends State<SportPage> {
   }
 }
 
+// rectangle des entrainements
 class TrainingRectangle extends StatelessWidget {
   final String title;
   final List<dynamic> exercises;
@@ -151,10 +150,12 @@ class TrainingRectangle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // savoir si tout les exos d'un entrainement sont fait ou non
     bool allExercisesCompleted = checkAllExercisesStatus(data, ind);
 
     return GestureDetector(
       onTap: () {
+        // faire le déroulement des exos
         _showTrainingMenu(context, exercises, ind);
       },
       child: Container(
@@ -292,13 +293,10 @@ class TrainingRectangle extends StatelessWidget {
   }
 }
 
+//Cette fonction permet lorsqu'un exercice est réalisé de mettre son status à jour afin d'afficher une coche verte
 Future<void> updateExerciseStatus(
     String exerciseId, String idCmpt, int index) async {
   try {
-    print("///////////////////////////////////");
-    print(index);
-    print(exerciseId);
-    print(idCmpt);
     final response = await http.put(
       Uri.parse(
           'https://api-sportrider-q2q3hzs-agdomenger.globeapp.dev/exercices/$exerciseId'),
@@ -311,10 +309,10 @@ Future<void> updateExerciseStatus(
     );
     if (response.statusCode == 200) {
       // La mise à jour a réussi
-      print('Exercise status updated successfully');
+      print('Exercise mis à jour');
     } else {
       // La mise à jour a échoué
-      print('Failed to update exercise status');
+      print('erreur lors de la mise à jour du status de l exo');
     }
   } catch (e) {
     // Une erreur s'est produite lors de la mise à jour
@@ -322,32 +320,19 @@ Future<void> updateExerciseStatus(
   }
 }
 
+// calculer le pourcentage d'exercices réalisés pas l'utilisateur
 double calculatePercentage(Map<String, dynamic> userData) {
-  // Vérifier si les données utilisateur contiennent la liste des entraînements
   if (userData.containsKey('entrainements')) {
-    // Récupérer la liste des entraînements depuis les données utilisateur
     List<dynamic> entrainements = userData['entrainements'];
-
-    // Initialiser le nombre total d'exercices et le nombre d'exercices vrais
     int totalExercises = 1;
     int trueExercises = 0;
 
-    // Parcourir chaque entraînement
     if (entrainements.length >= 1) {
       for (var entrainement in entrainements) {
-        // Récupérer la liste des exercices de l'entraînement
         List<dynamic> exerciceIds = entrainement['exerciceIds'] ?? [];
-
-        // Mettre à jour le nombre total d'exercices
         totalExercises += exerciceIds.length;
-
-        // Parcourir chaque exercice ID
         for (var exerciseId in exerciceIds) {
-          // Récupérer les données de l'exercice par son ID
-
-          // Extraire le statut de l'exercice de la réponse
           var exerciseStatus = exerciseId['status'];
-          // Vérifier si le statut de l'exercice est true
           if (exerciseStatus == true) {
             trueExercises++;
           }
@@ -355,31 +340,23 @@ double calculatePercentage(Map<String, dynamic> userData) {
       }
     }
 
-    // Calculer le pourcentage
     double percentage = (trueExercises / totalExercises) * 100;
 
-    // Arrondir le résultat à l'unité
     return percentage.roundToDouble();
   }
-
-  // Si les données utilisateur ne contiennent pas la liste des entraînements, retourner 0
   return 0.0;
 }
 
+// retourne vrai si tout les exercices de l'entrainement ont été réalisés, faux sinon
 bool checkAllExercisesStatus(Map<String, dynamic> userData, int trainingIndex) {
-  // Vérifier si les données utilisateur contiennent la liste des entraînements
   if (userData.containsKey('entrainements')) {
-    // Récupérer la liste des entraînements depuis les données utilisateur
     List<dynamic> entrainements = userData['entrainements'];
 
-    // Vérifier si l'indice de l'entraînement est valide
     if (trainingIndex >= 0 && trainingIndex < entrainements.length) {
-      // Récupérer l'entraînement correspondant à l'indice spécifié
       var entrainement = entrainements[trainingIndex];
 
       // Vérifier si l'entraînement contient des exercices
       if (entrainement.containsKey('exerciceIds')) {
-        // Récupérer la liste des exercices de l'entraînement
         List<dynamic> exerciceIds = entrainement['exerciceIds'];
 
         // Parcourir chaque exercice de l'entraînement
@@ -389,7 +366,7 @@ bool checkAllExercisesStatus(Map<String, dynamic> userData, int trainingIndex) {
             return false; // Si un exercice a un statut différent de true, retourner faux
           }
         }
-        return true; // Si tous les exercices ont un statut true, retourner vrai
+        return true; // tous les exercices ont étés réalisés
       } else {
         throw Exception('Exercise IDs not found in training data');
       }

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sport_rider/Widgets/event.dart';
 
+/* widget pour la liste de tout les evenements, c'est adapatable,
+ pour la page de base, on affiche seulement les 3 plus recents, 
+ dans la page calendrier on les affichent tous  */
 class EventListWidget extends StatelessWidget {
   final Map<String, dynamic> userData;
   final int? numberOfEventsToShow;
@@ -38,6 +41,7 @@ class EventListWidget extends StatelessWidget {
 
       return Column(
         children: displayedEvents.map<Widget>((event) {
+          // fait appel à l'event widget pour construire les rectangles
           return EventWidget(
             tag: event['tag'],
             title: event['titre'],
